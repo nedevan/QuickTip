@@ -1,0 +1,242 @@
+.quick_tip_block { transition: all .5s; position: absolute; z-index: 9980; top: 50%; left: 50%; transform: translate(-125px, -50px); width: 250px; padding: 10px; border-radius: 5px; box-sizing: content-box; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #0081EE; color: #fff;  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
+
+.quick_tip_block div { margin: 5px 0; }
+
+.quick_tip_head { width: 100%; font-size: 18px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+
+.quick_tip_text { width: 100%; font-size: 15px; font-weight: 300; }
+
+.quick_tip_footer { width: 100%; display: flex; align-items: center; justify-content: space-between; flex-direction: row; }
+
+.quick_tip_footer a { transition: all .2s; font-size: 14px; font-weight: 300; cursor: pointer; color: #fff; }
+
+.quick_tip_footer a:hover { color: #163aa5; font-size: 16; font-weight: 600; }
+
+.quick_tip_footer button { padding: 3px 8px; transition: all .2s; outline: none; border-radius: 5px; border: unset; background-color: #fff; font-size: 14px; font-weight: 300; color: #0081EE; cursor: pointer; margin: 0; }
+
+.quick_tip_footer button:hover { background-color: #23b113; color: #fff; font-size: 16; font-weight: 600; }
+
+.quick_tip_indicator { display: flex; align-items: center; justify-content: space-between; width: auto; font-size: 16px; font-weight: 600; }
+
+.quick_tip_indicator i { transition: all .2s; cursor: pointer; margin-right: 5px; }
+
+.quick_tip_indicator i:hover { color: #163aa5; }
+
+.quick_tip_title { display: flex; width: 185px; }
+
+.quick_tip_tail { position: absolute; border: 10px solid transparent; border-bottom-color: #0081EE; top: 0px; z-index: 9960; }
+
+@media screen and (max-width: 374px) {
+
+    .quick_tip_block { transform: translate(-133px, 0px); }
+}
+
+.quick-preloader { position: fixed; top: 0; left: 0px; z-index: 9990; background: #1f101078; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
+
+.quick-preloader-container { width: 64px; height: 64px; }
+
+.quick-preloader-box1, .quick-preloader-box2, .quick-preloader-box3 { border-radius: 12px; box-sizing: border-box; position: absolute; display: block; }
+
+.quick-preloader-box1 { width: 64px; height: 24px; margin-top: 40px; margin-left: 0px; animation: anime1 2.5s 0s forwards ease-in-out infinite; border: 12px solid #a801f5; }
+
+.quick-preloader-box2 { width: 24px; height: 24px; margin-top: 0px; margin-left: 0px; animation: anime2 2.5s 0s forwards ease-in-out infinite; border: 12px solid #a801f5; }
+
+.quick-preloader-box3 { width: 24px; height: 24px; margin-top: 0px; margin-left: 40px; animation: anime3 2.5s 0s forwards ease-in-out infinite; border: 12px solid #a801f5; }   
+    
+@keyframes anime1 {
+
+    0% {
+        width: 64px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    12.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    25% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    37.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    50% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    62.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+
+    75% {
+        width: 24px;
+        height: 64px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    87.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    100% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+}  
+    
+@keyframes anime2 {
+
+    0% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    12.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    25% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    37.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    50% {
+        width: 64px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 0px;
+    }
+
+    62.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    75% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    87.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    100% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+} 
+
+@keyframes anime3 {
+
+    0% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    12.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    25% {
+        width: 24px;
+        height: 64px;
+        margin-top: 0px;
+        margin-left: 40px;
+    }
+
+    37.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    50% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    62.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    75% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    87.5% {
+        width: 24px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 40px;
+    }
+
+    100% {
+        width: 64px;
+        height: 24px;
+        margin-top: 40px;
+        margin-left: 0px;
+    }
+}
