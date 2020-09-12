@@ -3,24 +3,20 @@
     var QuickTip = function(html, options = null) {
 
         let that = this;
-        
-        let step_i = 0;
 
-        let dataArray = [];
-
-        let run = false;
+        let quickTipData = [],
+            quickTipRun = false;
      
-        let title = "Текст",
-            text = "Какой-то текст",
-            button_stop = null,
-            button_next = null,
-            button_previous = null,
-            indicator = "1 из 3";
-
         // Поля темплейта
         let template = null,
             templateRender = false,
-            templateCSS = null;
+            templateCSS = null,
+            templateTitle = "Текст",
+            templateText = "Какой-то текст",
+            templateButtonStop = null,
+            templateButtonNext = null,
+            templateButtonPrevious = null,
+            templateIndicator = "1 из 3";;
 
         // Объект
         let object = null,
@@ -40,19 +36,20 @@
             blockTop = null,
             blockRight = null,
             blockBottom = null,
-            blocksRender = false,
-            _position = "absolute";
+            blockRender = false,
+            blockPosition = "absolute";
 
         let trigger = null,
-            onTriggerClick = null;
+            triggerOnClick = null;
 
         let preloader = null
             preloaderUser = null,
             preloaderRender = false,
-            preloader_i = 0;
+            preloaderIteration = 0;
 
         let stepNextBool = false,
-            stepPrevious = false;
+            stepPrevious = false,
+            stepIteration = 0;
 
         // Цвет блоков
         QuickTip.prototype.blocksColor = "#0f0f0f";
@@ -99,7 +96,7 @@
         // Следующий шаг
         QuickTip.prototype.nextStep = function() {
 
-            if(step_i < dataArray.length - 1) { 
+            if(stepIteration < quickTipData.length - 1) { 
 
                 stepNextBool = true;
                 stepPrevious = false;
@@ -114,8 +111,8 @@
                     else throw "Неверно объявлена функция onNext()";
                 }
 
-                step_i++;
-                preloader_i = 0;
+                stepIteration++;
+                preloaderIteration = 0;
                 
                 this.step(); 
             }
@@ -128,7 +125,7 @@
 
             if(objectOld !== null) objectOld.removeEventListener("click", objectClick, false);
             
-            if(step_i > 0) {
+            if(stepIteration > 0) {
 
                 stepNextBool = false;
                 stepPrevious = true;
@@ -141,107 +138,107 @@
                     else throw "Неверно объявлена функция onPrevious()";
                 }
 
-                step_i--;
-                preloader_i = 0;  
+                stepIteration--;
+                preloaderIteration = 0;  
 
                 this.step();
             }
         }
         
         // Установить шаг
-        QuickTip.prototype.setStep = function(_step, _bool = false) {
-        
-            step_i = _step;
+        QuickTip.prototype.setStep = function(step, bool = false) {
 
-            if(_bool) this.step();
+            stepIteration = step;
+
+            if(bool) this.step();
         }
         
         // Получить шаг
         QuickTip.prototype.getStep = function() {
-        
-            return step_i;
+
+            return stepIteration;
         }
         
         // Выполнить шаг
         QuickTip.prototype.step = function(eventActive = true) {
         
-            if(run && dataArray.length > 0 && html != null) {
+            if(quickTipRun && quickTipData.length > 0 && html != null) {
 
                 // Это глобальные и локальные настройки (ПЕРЕДЕЛАТЬ)
                 // this.blocksColor
                 if(options != null && options.blocksColor != undefined) this.blocksColor = options.blocksColor;
-                if(dataArray[step_i].blocksColor != undefined) this.blocksColor = dataArray[step_i].blocksColor;
-                if((options === null || options.blocksColor === undefined) && dataArray[step_i].blocksColor === undefined) this.blocksColor = "#0f0f0f";
+                if(quickTipData[stepIteration].blocksColor != undefined) this.blocksColor = quickTipData[stepIteration].blocksColor;
+                if((options === null || options.blocksColor === undefined) && quickTipData[stepIteration].blocksColor === undefined) this.blocksColor = "#0f0f0f";
 
                 // this.blocksOpacity
                 if(options != null && options.blocksOpacity != undefined) this.blocksOpacity = options.blocksOpacity;
-                if(dataArray[step_i].blocksOpacity != undefined) this.blocksOpacity = dataArray[step_i].blocksOpacity;
-                if((options === null || options.blocksOpacity === undefined) && dataArray[step_i].blocksOpacity === undefined) this.blocksOpacity = "0.5";
+                if(quickTipData[stepIteration].blocksOpacity != undefined) this.blocksOpacity = quickTipData[stepIteration].blocksOpacity;
+                if((options === null || options.blocksOpacity === undefined) && quickTipData[stepIteration].blocksOpacity === undefined) this.blocksOpacity = "0.5";
 
                 // this.blocksZ
                 if(options != null && options.blocksZ != undefined) this.blocksZ = options.blocksZ;
-                if(dataArray[step_i].blocksZ != undefined) this.blocksZ = dataArray[step_i].blocksZ;
-                if((options === null || options.blocksZ === undefined) && dataArray[step_i].blocksZ === undefined) this.blocksZ = "9000";
+                if(quickTipData[stepIteration].blocksZ != undefined) this.blocksZ = quickTipData[stepIteration].blocksZ;
+                if((options === null || options.blocksZ === undefined) && quickTipData[stepIteration].blocksZ === undefined) this.blocksZ = "9000";
 
                 // this.templateDefaultPosition
                 if(options != null && options.templateDefaultPosition != undefined) this.templateDefaultPosition = options.templateDefaultPosition;
-                if(dataArray[step_i].templateDefaultPosition != undefined) this.templateDefaultPosition = dataArray[step_i].templateDefaultPosition;
-                if((options === null || options.templateDefaultPosition === undefined) && dataArray[step_i].templateDefaultPosition === undefined) this.templateDefaultPosition = false;
+                if(quickTipData[stepIteration].templateDefaultPosition != undefined) this.templateDefaultPosition = quickTipData[stepIteration].templateDefaultPosition;
+                if((options === null || options.templateDefaultPosition === undefined) && quickTipData[stepIteration].templateDefaultPosition === undefined) this.templateDefaultPosition = false;
 
                 // this.delay
                 if(options != null && options.delay != undefined) this.delay = options.delay;
-                if(dataArray[step_i].delay != undefined) this.delay = dataArray[step_i].delay;
-                if((options === null || options.delay === undefined) && dataArray[step_i].delay === undefined) this.delay = 200;
+                if(quickTipData[stepIteration].delay != undefined) this.delay = quickTipData[stepIteration].delay;
+                if((options === null || options.delay === undefined) && quickTipData[stepIteration].delay === undefined) this.delay = 200;
 
                 // MARGIN_OBJECT
                 if(options != null && options.MARGIN_OBJECT != undefined) this.MARGIN_OBJECT = options.MARGIN_OBJECT;
-                if(dataArray[step_i].MARGIN_OBJECT != undefined) this.MARGIN_OBJECT = dataArray[step_i].MARGIN_OBJECT;
-                if((options === null || options.MARGIN_OBJECT === undefined) && dataArray[step_i].MARGIN_OBJECT === undefined) this.MARGIN_OBJECT = 4;
+                if(quickTipData[stepIteration].MARGIN_OBJECT != undefined) this.MARGIN_OBJECT = quickTipData[stepIteration].MARGIN_OBJECT;
+                if((options === null || options.MARGIN_OBJECT === undefined) && quickTipData[stepIteration].MARGIN_OBJECT === undefined) this.MARGIN_OBJECT = 4;
 
                 // blocksActive
                 if(options != null && options.blocksActive != undefined) this.blocksActive = options.blocksActive;
-                if(dataArray[step_i].blocksActive != undefined) this.blocksActive = dataArray[step_i].blocksActive;
-                if((options === null || options.blocksActive === undefined) && dataArray[step_i].blocksActive === undefined) this.blocksActive = true;
+                if(quickTipData[stepIteration].blocksActive != undefined) this.blocksActive = quickTipData[stepIteration].blocksActive;
+                if((options === null || options.blocksActive === undefined) && quickTipData[stepIteration].blocksActive === undefined) this.blocksActive = true;
 
                 // tailActive
                 if(options != null && options.tailActive != undefined) this.tailActive = options.tailActive;
-                if(dataArray[step_i].tailActive != undefined) this.tailActive = dataArray[step_i].tailActive;
-                if((options === null || options.tailActive === undefined) && dataArray[step_i].tailActive === undefined) this.tailActive = true;
+                if(quickTipData[stepIteration].tailActive != undefined) this.tailActive = quickTipData[stepIteration].tailActive;
+                if((options === null || options.tailActive === undefined) && quickTipData[stepIteration].tailActive === undefined) this.tailActive = true;
 
                 // buttonStopActive 
                 if(options != null && options.buttonStopActive != undefined) this.buttonStopActive = options.buttonStopActive;
-                if(dataArray[step_i].buttonStopActive != undefined) this.buttonStopActive = dataArray[step_i].buttonStopActive;
-                if((options === null || options.buttonStopActive === undefined) && dataArray[step_i].buttonStopActive === undefined) this.buttonStopActive = true;
+                if(quickTipData[stepIteration].buttonStopActive != undefined) this.buttonStopActive = quickTipData[stepIteration].buttonStopActive;
+                if((options === null || options.buttonStopActive === undefined) && quickTipData[stepIteration].buttonStopActive === undefined) this.buttonStopActive = true;
 
                 // buttonNextActive
                 if(options != null && options.buttonNextActive != undefined) this.buttonNextActive = options.buttonNextActive;
-                if(dataArray[step_i].buttonNextActive != undefined) this.buttonNextActive = dataArray[step_i].buttonNextActive;
-                if((options === null || options.buttonNextActive === undefined) && dataArray[step_i].buttonNextActive === undefined) this.buttonNextActive = true;
+                if(quickTipData[stepIteration].buttonNextActive != undefined) this.buttonNextActive = quickTipData[stepIteration].buttonNextActive;
+                if((options === null || options.buttonNextActive === undefined) && quickTipData[stepIteration].buttonNextActive === undefined) this.buttonNextActive = true;
 
                 // buttonPreviousActive 
                 if(options != null && options.buttonPreviousActive != undefined) this.buttonPreviousActive = options.buttonPreviousActive;
-                if(dataArray[step_i].buttonPreviousActive != undefined) this.buttonPreviousActive = dataArray[step_i].buttonPreviousActive;
-                if((options === null || options.buttonPreviousActive === undefined) && dataArray[step_i].buttonPreviousActive === undefined) this.buttonPreviousActive = true;
+                if(quickTipData[stepIteration].buttonPreviousActive != undefined) this.buttonPreviousActive = quickTipData[stepIteration].buttonPreviousActive;
+                if((options === null || options.buttonPreviousActive === undefined) && quickTipData[stepIteration].buttonPreviousActive === undefined) this.buttonPreviousActive = true;
 
                 // triggerActive
                 if(options != null && options.triggerActive != undefined) this.triggerActive = options.triggerActive;
-                if(dataArray[step_i].triggerActive != undefined) this.triggerActive = dataArray[step_i].triggerActive;
-                if((options === null || options.triggerActive === undefined) && dataArray[step_i].triggerActive === undefined) this.triggerActive = true;
+                if(quickTipData[stepIteration].triggerActive != undefined) this.triggerActive = quickTipData[stepIteration].triggerActive;
+                if((options === null || options.triggerActive === undefined) && quickTipData[stepIteration].triggerActive === undefined) this.triggerActive = true;
 
                 // offset
                 if(options != null && options.offset != undefined) this.offset = options.offset;
-                if(dataArray[step_i].offset != undefined) this.offset = dataArray[step_i].offset;
-                if((options === null || options.offset === undefined) && dataArray[step_i].offset === undefined) this.offset = { left: 0, top: 0 };
+                if(quickTipData[stepIteration].offset != undefined) this.offset = quickTipData[stepIteration].offset;
+                if((options === null || options.offset === undefined) && quickTipData[stepIteration].offset === undefined) this.offset = { left: 0, top: 0 };
 
                 // errorTimeout
                 if(options != null && options.errorTimeout != undefined) this.errorTimeout = options.errorTimeout;
-                if(dataArray[step_i].errorTimeout != undefined) this.errorTimeout = dataArray[step_i].errorTimeout;
-                if((options === null || options.errorTimeout === undefined) && dataArray[step_i].errorTimeout === undefined) this.errorTimeout = 4;
+                if(quickTipData[stepIteration].errorTimeout != undefined) this.errorTimeout = quickTipData[stepIteration].errorTimeout;
+                if((options === null || options.errorTimeout === undefined) && quickTipData[stepIteration].errorTimeout === undefined) this.errorTimeout = 4;
 
-                // dataArray.onStep()
-                if(dataArray[step_i].onStep !== undefined && eventActive) {
+                // quickTipData.onStep()
+                if(quickTipData[stepIteration].onStep !== undefined && eventActive) {
 
-                    if(typeof dataArray[step_i].onStep === "function") dataArray[step_i].onStep();
+                    if(typeof quickTipData[stepIteration].onStep === "function") quickTipData[stepIteration].onStep();
     
                     else throw "Неверно объявлена функция onStep()";
                 }
@@ -256,8 +253,7 @@
                 
                 setTimeout(() => {
                     
-                    object = getObject(dataArray[step_i].object);
-
+                    object = getObject(quickTipData[stepIteration].object);
                     objectCoordinate = getObjectCoordinate(object);
             
                     if(objectCoordinate === null) {
@@ -272,26 +268,26 @@
                                 else throw "Неверно объявлена функция onStepError()";
                             }
 
-                            if(stepNextBool) { this.nextStep(); throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; } 
+                            if(stepNextBool) { this.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; } 
 
                             if(stepPrevious) { 
 
-                                let check = checkToDoPrevious(dataArray, step_i + 1);
+                                let check = checkToDoPrevious(quickTipData, stepIteration + 1);
                                 
                                 if(check.bool) {
 
                                     this.setStep(check.id, true); 
-                                    throw 'Шаг с элементом "' + dataArray[step_i + 1].object + '" не найден и будет пропущен.'; 
+                                    throw 'Шаг с элементом "' + quickTipData[stepIteration + 1].object + '" не найден и будет пропущен.'; 
                                 }
 
                                 else { 
 
-                                    this.setStep(step_i + 1, true); 
-                                    throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; 
+                                    this.setStep(stepIteration + 1, true); 
+                                    throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
                                 }
                             }
 
-                            if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; }
+                            if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; }
                         }
 
                         else {
@@ -301,12 +297,12 @@
 
                             setTimeout(function() {
 
-                                if(!run) return;
+                                if(!quickTipRun) return;
                             
-                                preloader_i++;
+                                preloaderIteration++;
     
                                 // Выполняется, когда время кончится
-                                if(preloader_i > that.errorTimeout) {
+                                if(preloaderIteration > that.errorTimeout) {
     
                                     // options.onStepError()
                                     if(options != null && options.onStepError !== undefined && eventActive) {
@@ -316,28 +312,28 @@
                                         else throw "Неверно объявлена функция onStepError()";
                                     }
     
-                                    if(!run) return;
+                                    if(!quickTipRun) return;
                                     
-                                    if(stepNextBool) { that.nextStep(); throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; } 
+                                    if(stepNextBool) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; } 
     
                                     if(stepPrevious) {
 
-                                        let check = checkToDoPrevious(dataArray, step_i + 1);
+                                        let check = checkToDoPrevious(quickTipData, stepIteration + 1);
                                 
                                         if(check.bool) {
 
                                             that.setStep(check.id, true); 
-                                            throw 'Шаг с элементом "' + dataArray[step_i + 1].object + '" не найден и будет пропущен.'; 
+                                            throw 'Шаг с элементом "' + quickTipData[stepIteration + 1].object + '" не найден и будет пропущен.'; 
                                         }
 
                                         else { 
                                             
-                                            that.setStep(step_i + 1, true); 
-                                            throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; 
+                                            that.setStep(stepIteration + 1, true); 
+                                            throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
                                         }
                                     }
     
-                                    if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + dataArray[step_i - 1].object + '" не найден и будет пропущен.'; }
+                                    if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; }
                                 }
     
                                 that.step();
@@ -350,10 +346,10 @@
                         destroyPreloader();
                         destroyTail();
 
-                        // dataArray.onClick()
-                        if(dataArray[step_i].onClick !== undefined && eventActive) {
+                        // quickTipData.onClick()
+                        if(quickTipData[stepIteration].onClick !== undefined && eventActive) {
    
-                            if(typeof dataArray[step_i].onClick === "function") objectClick = dataArray[step_i].onClick;
+                            if(typeof quickTipData[stepIteration].onClick === "function") objectClick = quickTipData[stepIteration].onClick;
 
                             else throw "Неверно объявлена функция onClick()";
                         }
@@ -370,26 +366,26 @@
                         renderTemplate();
 
                         setTemplateTarget(objectCoordinate, getTemplateCoordinate());
-                        setTemplateData(dataArray[step_i]);
+                        setTemplateData(quickTipData[stepIteration]);
 
                         if(!this.triggerActive) destroyTrigger();
 
                         if(this.triggerActive) {
 
-                            // dataArray.onTriggerClick()
-                            if(dataArray[step_i].onTriggerClick !== undefined) {
+                            // quickTipData.triggerOnClick()
+                            if(quickTipData[stepIteration].triggerOnClick !== undefined) {
 
-                                if(typeof dataArray[step_i].onTriggerClick === "function") onTriggerClick = dataArray[step_i].onTriggerClick;
+                                if(typeof quickTipData[stepIteration].triggerOnClick === "function") triggerOnClick = quickTipData[stepIteration].triggerOnClick;
                 
-                                else throw "Неверно объявлена функция onTriggerClick()";
+                                else throw "Неверно объявлена функция triggerOnClick()";
                             }
 
-                            // options.onTriggerClick()
-                            else if(options != null && options.onTriggerClick !== undefined) {
+                            // options.triggerOnClick()
+                            else if(options != null && options.triggerOnClick !== undefined) {
 
-                                if(typeof options.onTriggerClick === "function") onTriggerClick = options.onTriggerClick;
+                                if(typeof options.triggerOnClick === "function") triggerOnClick = options.triggerOnClick;
                 
-                                else throw "Неверно объявлена функция onTriggerClick()";
+                                else throw "Неверно объявлена функция triggerOnClick()";
                             }
 
                             initTrigger();
@@ -397,13 +393,11 @@
                             renderTrigger();
                         }
 
-                        button_stop.style.display = this.buttonStopActive ? "block" : "none";
-            
-                        button_next.style.display = this.buttonNextActive ? "block" : "none";
-            
-                        button_previous.style.display = this.buttonPreviousActive ? "block" : "none";
+                        templateButtonStop.style.display = this.buttonStopActive ? "block" : "none";
+                        templateButtonNext.style.display = this.buttonNextActive ? "block" : "none";
+                        templateButtonPrevious.style.display = this.buttonPreviousActive ? "block" : "none";
                 
-                        if(!this.blocksActive && blocksRender) destroyBlocks();
+                        if(!this.blocksActive && blockRender) destroyBlocks();
                         
                         if(this.blocksActive) {
                             
@@ -412,7 +406,7 @@
                             renderBlocks();
                         }
                         
-                        if(!this.tailActive && blocksRender) destroyTail();
+                        if(!this.tailActive && blockRender) destroyTail();
 
                         if(this.tailActive) {
                             
@@ -437,7 +431,7 @@
         }
 
         // Запустить
-        QuickTip.prototype.run = function(__step = null) {
+        QuickTip.prototype.run = function(step = null) {
 
             document.body.style.position = "relative";
             document.body.style.overflow = 'hidden';
@@ -451,19 +445,19 @@
                 else throw "Неверно объявлена функция onStart()";
             }
 
-            run = true;
+            quickTipRun = true;
             
-            if(__step === null) this.setStep(0);
+            if(step === null) this.setStep(0);
 
-            else this.setStep(__step);
+            else this.setStep(step);
 
             this.step();
         }
 
         // Задать сценарий
-        QuickTip.prototype.set = function(_dataArray) {
+        QuickTip.prototype.set = function(data) {
 
-            dataArray = _dataArray;
+            quickTipData = data;
 
             this.step();
         }
@@ -528,22 +522,22 @@
             return result;
         }
 
-        function getWidthDocument() {
+        function getDocumentWidth() {
 
             return document.body.scrollWidth;
         }
 
-        function getHeightDocument() {
+        function getDocumentHeight() {
             
             return document.body.scrollHeight;
         }
 
-        function getWidthWindow() {
+        function getWindowWidth() {
 
             return document.documentElement.clientWidth;
         }
 
-        function getHeightWindow() {
+        function getWindowHeight() {
 
             return document.documentElement.clientHeight;
         }
@@ -561,9 +555,7 @@
                 if(equivalent[1] !== undefined) {
 
                     selector = equivalent[0];
-
                     equivalent = equivalent[1].split(')');
-
                     id = Number(equivalent[0]);
                 }
                 
@@ -588,17 +580,11 @@
             if(object !== null && object !== undefined  && object.style.display !== "none" && object.style.width !== "0px" && object.style.height !== "0px") {
 
                 objectClientRect = object.getBoundingClientRect();
-
                 objectClientRect.OffsetTop = objectClientRect.top + pageYOffset;
-
                 objectClientRect.OffsetBottom = objectClientRect.bottom + pageYOffset;
-
                 objectClientRect.OffsetLeft = objectClientRect.left + pageXOffset;
-
                 objectClientRect.OffsetRight = objectClientRect.right + pageXOffset;
-
                 objectClientRect.centerTop = objectClientRect.top + pageYOffset + objectClientRect.height / 2;
-
                 objectClientRect.centerLeft = objectClientRect.left + pageXOffset + objectClientRect.width / 2;
 
                 return objectClientRect;
@@ -615,23 +601,20 @@
                 temp.innerHTML = html;
                 temp = temp.childNodes[1];
 
-                title = temp.querySelector("#quickTip_title");
+                templateTitle = temp.querySelector("#quick-tip-title");
+                templateText = temp.querySelector("#quick-tip-text");
 
-                text = temp.querySelector("#quickTip_text");
+                templateButtonStop = temp.querySelector("#quick-tip-stop");
+                if(templateButtonStop != null) templateButtonStop.onclick = function() { that.skip(); }
 
-                button_stop = temp.querySelector("#quickTip_stop");
-                if(button_stop != null) button_stop.onclick = function() { that.skip(); }
+                templateButtonNext = temp.querySelector("#quick-tip-next");
+                if(templateButtonNext != null) templateButtonNext.onclick = function() { that.nextStep(); }
 
-                button_next = temp.querySelector("#quickTip_next");
-                if(button_next != null) button_next.onclick = function() { that.nextStep(); }
+                templateButtonPrevious = temp.querySelector("#quick-tip-previous");
+                if(templateButtonPrevious != null) templateButtonPrevious.onclick = function() { that.previousStep(); }
 
-                button_previous = temp.querySelector("#quickTip_previous");
-                if(button_previous != null) button_previous.onclick = function() { that.previousStep(); }
-
-                indicator = temp.querySelector("#quickTip_indicator");
-
+                templateIndicator = temp.querySelector("#quick-tip-indicator");
                 template = temp;
-
                 templateCSS = temp.style;
             }
         }
@@ -639,44 +622,38 @@
         function setTemplateData(data) {
 
             // Титульник
-            if(data.title === undefined && title != null) title.innerHTML = "";
-            else if(title != null) title.innerHTML = data.title;
+            if(data.templateTitle === undefined && templateTitle != null) templateTitle.innerHTML = "";
+            else if(templateTitle != null) templateTitle.innerHTML = data.templateTitle;
         
             // Основной текст
-            if(data.text === undefined && text != null) text.innerHTML = "";
-            else if(text != null) text.innerHTML = data.text;
+            if(data.templateText === undefined && templateText != null) templateText.innerHTML = "";
+            else if(templateText != null) templateText.innerHTML = data.templateText;
 
             // Кнопка стоп
-            if(data.button_stop === undefined && button_stop != null) button_stop.innerHTML = "Пропустить";
-            else if(button_stop != null) button_stop.innerHTML = data.button_stop;
+            if(data.templateButtonStop === undefined && templateButtonStop != null) templateButtonStop.innerHTML = "Пропустить";
+            else if(templateButtonStop != null) templateButtonStop.innerHTML = data.templateButtonStop;
 
             // Кнопка далее
-            if(data.button_next === undefined && button_next != null) button_next.innerHTML = "Далее";
-            else if(button_next != null) button_next.innerHTML = data.button_next;
+            if(data.templateButtonNext === undefined && templateButtonNext != null) templateButtonNext.innerHTML = "Далее";
+            else if(templateButtonNext != null) templateButtonNext.innerHTML = data.templateButtonNext;
 
             // Индикатор
-            if(data.indicator === undefined && indicator != null) indicator.innerHTML = that.getStep() + 1 + " из " + dataArray.length;
-            else if(indicator != null) indicator.innerHTML = data.indicator;
+            if(data.templateIndicator === undefined && templateIndicator != null) templateIndicator.innerHTML = that.getStep() + 1 + " из " + quickTipData.length;
+            else if(templateIndicator != null) templateIndicator.innerHTML = data.templateIndicator;
         }
 
         function getTemplateCoordinate() {
             
             if(template !== null) {
-
-                objectClientRect = template.getBoundingClientRect();
-        
-                let coordinate = objectClientRect;
-
-                coordinate.OffsetTop = coordinate.top + pageYOffset;
-
-                coordinate.OffsetBottom = coordinate.bottom + pageYOffset;
-
-                coordinate.OffsetLeft = coordinate.left + pageXOffset;
-
-                coordinate.OffsetRight = coordinate.right + pageXOffset;
                 
-                coordinate.centerTop = coordinate.top + pageYOffset + coordinate.height / 2;
+                let coordinate = null;
 
+                coordinate = objectClientRect = template.getBoundingClientRect();
+                coordinate.OffsetTop = coordinate.top + pageYOffset;
+                coordinate.OffsetBottom = coordinate.bottom + pageYOffset;
+                coordinate.OffsetLeft = coordinate.left + pageXOffset;
+                coordinate.OffsetRight = coordinate.right + pageXOffset;
+                coordinate.centerTop = coordinate.top + pageYOffset + coordinate.height / 2;
                 coordinate.centerLeft = coordinate.left + pageXOffset + coordinate.width / 2;
             
                 return coordinate;
@@ -685,7 +662,7 @@
             else return null;
         }
 
-        function setTemplateTarget(coordinateObject, coordinateTemplate) {
+        function setTemplateTarget(objectСoordinate, coordinateTemplate) {
 
             setTimeout(function() {
 
@@ -697,64 +674,66 @@
                     let allowRange = coordinateTemplate.width + that.MARGIN_OBJECT;
 
                     // Отступы объекта
-                    let margin_left = coordinateObject.OffsetLeft,
-                        margin_right = getWidthDocument() - coordinateObject.OffsetRight;
+                    let marginLeft = objectСoordinate.OffsetLeft,
+                        marginRight = getDocumentWidth() - objectСoordinate.OffsetRight;
 
                     // Если малеький экран
-                    if(getWidthDocument() < 374) {
+                    if(getDocumentWidth() < 374) {
 
                         allowRange = allowRange / 2;  
                     }
 
                     // Cередина на маленьких экранах (Должно перебить условие "Самый левый блок")
-                    if(coordinateObject.centerLeft === getWidthDocument() / 2) {
+                    if(objectСoordinate.centerLeft === getDocumentWidth() / 2) {
 
-                        template.style.left = coordinateObject.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
+                        template.style.left = objectСoordinate.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
                     }
 
                     // Самый левый блок
-                    else if(coordinateObject.centerLeft < allowRange) {
+                    else if(objectСoordinate.centerLeft < allowRange) {
 
                         // Если вплотную к экрану
-                        if(coordinateObject.OffsetLeft < 10) template.style.left = coordinateObject.OffsetLeft + 10 + that.offset.left + "px";
+                        if(objectСoordinate.OffsetLeft < 10) template.style.left = objectСoordinate.OffsetLeft + 10 + that.offset.left + "px";
                         
-                        else template.style.left = coordinateObject.OffsetLeft - margin_left / 2 + that.offset.left + "px";
+                        else template.style.left = objectСoordinate.OffsetLeft - marginLeft / 2 + that.offset.left + "px";
                     }
 
                     // Самый правый блок
-                    else if(coordinateObject.centerLeft > getWidthDocument() - allowRange) {
+                    else if(objectСoordinate.centerLeft > getDocumentWidth() - allowRange) {
 
                         // Если вплотную к экрану
-                        if(coordinateObject.OffsetLeft > getWidthDocument() - 10) template.style.left = coordinateObject.OffsetRight - coordinateTemplate.width - 10 + that.offset.left + "px";
+                        if(objectСoordinate.OffsetLeft > getDocumentWidth() - 10) template.style.left = objectСoordinate.OffsetRight - coordinateTemplate.width - 10 + that.offset.left + "px";
 
-                        else template.style.left = coordinateObject.OffsetRight - coordinateTemplate.width + margin_right / 2 + that.offset.left + "px";
+                        else template.style.left = objectСoordinate.OffsetRight - coordinateTemplate.width + marginRight / 2 + that.offset.left + "px";
                     }
 
                     // Середина
                     else {
 
-                        template.style.left = coordinateObject.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
+                        template.style.left = objectСoordinate.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
                     }
                     
                     // Если блок снизу
-                    if(coordinateObject.OffsetTop > getHeightDocument() - coordinateTemplate.height - that.MARGIN_OBJECT * 2) {
+                    if(objectСoordinate.OffsetTop > getDocumentHeight() - coordinateTemplate.height - that.MARGIN_OBJECT * 2) {
 
-                        tailTopBool = false; tailBottomBool = true;
+                        tailTopBool = false;
+                        tailBottomBool = true;
                         
-                        template.style.top = coordinateObject.OffsetTop - coordinateTemplate.height - that.MARGIN_OBJECT * 2 + that.offset.top + "px";
+                        template.style.top = objectСoordinate.OffsetTop - coordinateTemplate.height - that.MARGIN_OBJECT * 2 + that.offset.top + "px";
                     }
     
                     else {
 
-                        tailTopBool = true; tailBottomBool = false; 
+                        tailTopBool = true;
+                        tailBottomBool = false;
             
-                        template.style.top = coordinateObject.OffsetTop + coordinateObject.height + that.MARGIN_OBJECT * 2 + that.offset.top + "px";
+                        template.style.top = objectСoordinate.OffsetTop + objectСoordinate.height + that.MARGIN_OBJECT * 2 + that.offset.top + "px";
                     }
 
                     // Если темлейт не влезает из-за большой цели
-                    if(getHeightWindow() / 1.3 - coordinateTemplate.height < coordinateObject.height) {
+                    if(getWindowHeight() / 1.3 - coordinateTemplate.height < objectСoordinate.height) {
 
-                        template.style.top = coordinateObject.centerTop + that.offset.top +  "px";
+                        template.style.top = objectСoordinate.centerTop + that.offset.top +  "px";
                     }
 
                     object.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
@@ -775,7 +754,10 @@
 
         function destroyTemplate() {
 
-            if(template !== null) { template.remove(); template = null; }
+            if(template !== null) {
+                template.remove();
+                template = null;
+            }
             
             templateRender = false;
         }
@@ -784,7 +766,7 @@
 
             if(blockLeft === null && blockTop === null && blockRight === null && blockBottom === null) { 
                 
-                _position = (getHeightDocument() < window.innerHeight) ? "fixed" : "absolute";
+                blockPosition = (getDocumentHeight() < window.innerHeight) ? "fixed" : "absolute";
 
                 blockLeft = document.createElement("div");
                 blockTop = document.createElement("div");
@@ -794,8 +776,7 @@
                 blockLeft.style.backgroundColor = that.blocksColor;
                 blockLeft.style.opacity = that.blocksOpacity;
                 blockLeft.style.zIndex = that.blocksZ;
-
-                blockLeft.style.position = _position;
+                blockLeft.style.position = blockPosition;
                 blockLeft.style.left = "0px";
                 blockLeft.style.top = "0px";
                 blockLeft.style.right = "0px";
@@ -804,8 +785,7 @@
                 blockTop.style.backgroundColor = that.blocksColor;
                 blockTop.style.opacity = that.blocksOpacity;
                 blockTop.style.zIndex = that.blocksZ;
-
-                blockTop.style.position = _position;
+                blockTop.style.position = blockPosition;
                 blockTop.style.left = "0px";
                 blockTop.style.top = "0px";
                 blockTop.style.right = "0px";
@@ -814,8 +794,7 @@
                 blockRight.style.backgroundColor = that.blocksColor;
                 blockRight.style.opacity = that.blocksOpacity;
                 blockRight.style.zIndex = that.blocksZ;
-
-                blockRight.style.position = _position;
+                blockRight.style.position = blockPosition;
                 blockRight.style.left = "0px";
                 blockRight.style.top = "0px";
                 blockRight.style.right = "0px";
@@ -824,8 +803,7 @@
                 blockBottom.style.backgroundColor = that.blocksColor;
                 blockBottom.style.opacity = that.blocksOpacity;
                 blockBottom.style.zIndex = that.blocksZ;
-
-                blockBottom.style.position = _position;
+                blockBottom.style.position = blockPosition;
                 blockBottom.style.left = "0px";
                 blockBottom.style.top = "0px";
                 blockBottom.style.right = "0px";
@@ -852,43 +830,43 @@
             }
         }
         
-        function setBlocksTarget(coordinateObject) {
+        function setBlocksTarget(objectСoordinate) {
         
             // TOP
-            let top_position = coordinateObject.OffsetTop - that.MARGIN_OBJECT;
-            blockTop.style.height = ((top_position > 0) ? top_position : 0) + "px";
+            let topPosition = objectСoordinate.OffsetTop - that.MARGIN_OBJECT;
+            blockTop.style.height = ((topPosition > 0) ? topPosition : 0) + "px";
             blockTop.style.bottom = "unset";
             
             // BOTTOM
-            let bottom_position = (_position === "absolute") ? getHeightDocument() - (coordinateObject.OffsetTop + coordinateObject.height + that.MARGIN_OBJECT) : window.innerHeight - (coordinateObject.OffsetTop + coordinateObject.height + that.MARGIN_OBJECT);
-            blockBottom.style.height = ((bottom_position > 0) ? bottom_position : 0)  + "px";
+            let bottomPosition = (blockPosition === "absolute") ? getDocumentHeight() - (objectСoordinate.OffsetTop + objectСoordinate.height + that.MARGIN_OBJECT) : window.innerHeight - (objectСoordinate.OffsetTop + objectСoordinate.height + that.MARGIN_OBJECT);
+            blockBottom.style.height = ((bottomPosition > 0) ? bottomPosition : 0)  + "px";
             blockBottom.style.top = "unset";
         
             // LEFT
-            let left_position = coordinateObject.OffsetLeft - that.MARGIN_OBJECT;
-            blockLeft.style.width = ((left_position> 0) ? left_position : 0) + "px";
-            blockLeft.style.top = top_position + "px";
-            blockLeft.style.bottom = bottom_position + "px";
+            let leftPosition = objectСoordinate.OffsetLeft - that.MARGIN_OBJECT;
+            blockLeft.style.width = ((leftPosition> 0) ? leftPosition : 0) + "px";
+            blockLeft.style.top = topPosition + "px";
+            blockLeft.style.bottom = bottomPosition + "px";
             blockLeft.style.right = "unset";
         
             // RIGHT
-            let right_position = getWidthDocument() - (coordinateObject.OffsetLeft + that.MARGIN_OBJECT + coordinateObject.width);
-            blockRight.style.width = ((right_position > 0) ? right_position : 0) + "px";
-            blockRight.style.top = top_position + "px";
-            blockRight.style.bottom = bottom_position + "px";
+            let rightPosition = getDocumentWidth() - (objectСoordinate.OffsetLeft + that.MARGIN_OBJECT + objectСoordinate.width);
+            blockRight.style.width = ((rightPosition > 0) ? rightPosition : 0) + "px";
+            blockRight.style.top = topPosition + "px";
+            blockRight.style.bottom = bottomPosition + "px";
             blockRight.style.left = "unset";
         }
         
         function renderBlocks() {
         
-            if(blocksRender === false) {
+            if(blockRender === false) {
         
                 document.body.append(blockLeft);
                 document.body.append(blockTop);
                 document.body.append(blockRight);
                 document.body.append(blockBottom);
 
-                blocksRender = true;
+                blockRender = true;
             }
         }
         
@@ -899,7 +877,7 @@
             if(blockRight !== null) { blockRight.remove(); blockRight = null; }
             if(blockBottom !== null) { blockBottom.remove(); blockBottom = null; }
 
-            blocksRender = false;
+            blockRender = false;
         }
 
         function initTrigger() {
@@ -907,41 +885,35 @@
             if(trigger === null) {
 
                 trigger = document.createElement("div");
-
                 trigger.style.position = "absolute";
                 trigger.style.left = "0px";
                 trigger.style.top = "0px";
                 trigger.style.right = "0px";
                 trigger.style.bottom = "0px";
-
-                // trigger.style.backgroundColor = "#00ff00";
-                // trigger.style.opacity = "1";
-
                 trigger.style.zIndex = "9970";
             }
 
             else {
 
-                let trigger_temp = trigger.cloneNode(true);
+                let triggerTemp = trigger.cloneNode(true);
 
                 destroyTrigger();
 
-                trigger = trigger_temp;
-
+                trigger = triggerTemp;
                 trigger.style.zIndex = "9970";
             };
         }
         
-        function setTriggerTarget(coordinateObject) {
+        function setTriggerTarget(objectСoordinate) {
 
-            trigger.style.width = coordinateObject.width + "px";
-            trigger.style.height = coordinateObject.height + "px";
-            trigger.style.top = coordinateObject.OffsetTop + "px";
-            trigger.style.left = coordinateObject.OffsetLeft + "px";
+            trigger.style.width = objectСoordinate.width + "px";
+            trigger.style.height = objectСoordinate.height + "px";
+            trigger.style.top = objectСoordinate.OffsetTop + "px";
+            trigger.style.left = objectСoordinate.OffsetLeft + "px";
             trigger.style.right = "unset";
             trigger.style.bottom = "unset";
             trigger.style.cursor = "pointer";
-            trigger.addEventListener("click", onTriggerClick, false);
+            trigger.addEventListener("click", triggerOnClick, false);
         }
 
         function renderTrigger() {
@@ -953,14 +925,17 @@
 
         function destroyTrigger() { 
 
-            if(trigger != null) { trigger.remove(); trigger = null; }
+            if(trigger != null) { 
+                trigger.remove(); 
+                trigger = null; 
+            }
         }
 
         function initTail() {
         
             if(tail === null) {
 
-                if(tailTemp === null) tailTemp = document.querySelector("#quickTip_tail");
+                if(tailTemp === null) tailTemp = document.querySelector("#quick-tip-tail");
 
                 if(tailTemp !== null) {
 
@@ -973,11 +948,11 @@
             }
         }
 
-        function setTailCoordinate(coordinateObject, coordinateTemplate) {
+        function setTailCoordinate(objectСoordinate, coordinateTemplate) {
             
             if(that.tailActive) {
 
-                tail.style.left = coordinateObject.centerLeft - 10 + "px";
+                tail.style.left = objectСoordinate.centerLeft - 10 + "px";
 
                 if(tailTopBool) {
 
@@ -1005,7 +980,10 @@
         
         function destroyTail() {
         
-            if(tail !== null) { tail.remove(); tail = null; }
+            if(tail !== null) {
+                tail.remove();
+                tail = null;
+            }
 
             tailRender = false;
         }
@@ -1027,7 +1005,10 @@
 
         function destroyPreloader() {
 
-            if(preloader != null) { preloader.remove(); preloader = null; }
+            if(preloader != null) { 
+                preloader.remove(); 
+                preloader = null; 
+            }
 
             preloaderRender = false;
         }
@@ -1043,7 +1024,7 @@
             document.body.style.overflow = 'auto';
             document.body.style.userSelect = "auto";
 
-            run = false;
+            quickTipRun = false;
 
             stepNextBool = false;
             stepPrevious = false;
@@ -1051,16 +1032,16 @@
             if(objectOld !== null) objectOld.removeEventListener("click", objectClick, false);
         }
 
-        let onresize_bool = false,
+        let onresizeBool = false,
             timerId = null;
         
-        window.onresize = function(event) { 
+        window.onresize = function(event) {
 
-            onresize_bool = true;
+            onresizeBool = true;
 
             clearTimeout(timerId);
 
-            if(run && dataArray.length > 0 && onresize_bool) {
+            if(quickTipRun && quickTipData.length > 0 && onresizeBool) {
 
                 destroyTemplate();
                 destroyTail();
@@ -1070,7 +1051,7 @@
                     
                     that.step(false);
 
-                    onresize_bool = false;
+                    onresizeBool = false;
                 }, 600);
             } 
         }
@@ -1079,7 +1060,7 @@
 
             event = event || window.event;
 
-            if(run && event.keyCode > 36 && event.keyCode < 41 || event.keyCode > 32 && event.keyCode < 37) return false; 
+            if(quickTipRun && event.keyCode > 36 && event.keyCode < 41 || event.keyCode > 32 && event.keyCode < 37) return false; 
         }
     };
 

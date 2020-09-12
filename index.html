@@ -7,12 +7,9 @@
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Jekyll v4.0.1">
   <title>Blog Template · Bootstrap</title>
-
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-
   <link href="css/bootstrap.css" rel="stylesheet">
   <link href="css/blog.css" rel="stylesheet">
-
   <link href="css/template.css" rel="stylesheet">
 </head>
 <body>
@@ -220,48 +217,56 @@
 
   let preloader = `
     <div class="quick-preloader">
-        <div class="quick-preloader-container">
-            <div class="quick-preloader-box1"></div>
-            <div class="quick-preloader-box2"></div>
-            <div class="quick-preloader-box3"></div>
-        </div>
-    </div> 
+      <div class="quick-preloader-container">
+        <div class="quick-preloader-box1"></div>
+        <div class="quick-preloader-box2"></div>
+        <div class="quick-preloader-box3"></div>
+      </div>
+    </div>
   `;
 
   let template = `
-    <div class="quick_tip_block">
+    <div class="quick-tip-block">
 
-      <!-- Хвостик темплейта -->
-      <div id="quickTip_tail" class="quick_tip_tail"></div>
+      <!-- Хвостик -->
+      <div id="quick-tip-tail" class="quick-tip-tail"></div>
 
-      <div class="quick_tip_head">
-          <div id="quickTip_title" class="quick_tip_title">Меню</div>
-          <div class="quick_tip_indicator">
-              <i id="quickTip_previous" class="fa fa-chevron-left" aria-hidden="true"></i>
-              <span id="quickTip_indicator">1 из 3</span>
+      <!-- Шапка -->
+      <div class="quick-tip-head">
+        <div id="quick-tip-title" class="quick-tip-title">Меню</div>
+          <div class="quick-tip-indicator">
+            <i id="quick-tip-previous" class="fa fa-chevron-left" aria-hidden="true"></i>
+            <span id="quick-tip-indicator">1 из 3</span>
           </div>
-      </div>
-      <div id="quickTip_text" class="quick_tip_text">Кнопка фхода, нужна для того чтобы войти</div>
-      <div class="quick_tip_footer">
-          <a href="#" id="quickTip_stop">Пропустить</a>
-          <button id="quickTip_next">Далее</button>
+        </div>
+
+        <!-- Текст -->
+        <div id="quick-tip-text" class="quick-tip-text">
+          Кнопка фхода, нужна для того чтобы войти
+        </div>
+
+        <!-- Кнопки -->
+        <div class="quick-tip-footer">
+          <a href="#" id="quick-tip-stop">Пропустить</a>
+          <button id="quick-tip-next">Далее</button>
+        </div>
       </div>
     </div>
   `;
   
   var quickTip = new QuickTip(template, {
     onStart: function () { console.log("options.onStart() Обработка старта программы, шаг - " + quickTip.getStep()); },
-    // onStep: function () { console.log("options.onStep() Обработка шага, шаг - " + quickTip.getStep()); },
-    // onStepError: function() { console.log("options.onStepError() Обработка отсутствия шага, шаг - " + quickTip.getStep()); },
-    // onNext: function() { console.log("options.onNext() Запускается при шаге вперед, шаг - " + quickTip.getStep()); },
-    // onPrevious: function () { console.log("options.onPrevious() Запускается при шаге назад, шаг - " + quickTip.getStep()); },
-    // triggerActive: false,
-    // errorTimeout: 5,
-    // onClick: function() { alert(1111); },
-    // onStepError: function() { alert("Программа завершается"); quickTip.stop(); },
-    // onTriggerClick: function() { alert("onTriggerClick()"); },
-    // onSkip: function () { console.log("options.onSkip() Обработка конца программы, шаг - " + quickTip.getStep()); },
-    onEnd: function () { console.log("options.onEnd() Обработка конца программы, шаг - " + quickTip.getStep()); }
+    onStep: function () { console.log("options.onStep() Обработка шага, шаг - " + quickTip.getStep()); },
+    onStepError: function() { console.log("options.onStepError() Обработка отсутствия шага, шаг - " + quickTip.getStep()); },
+    onNext: function() { console.log("options.onNext() Запускается при шаге вперед, шаг - " + quickTip.getStep()); },
+    onPrevious: function () { console.log("options.onPrevious() Запускается при шаге назад, шаг - " + quickTip.getStep()); },
+    onClick: function() { alert(1111); },
+    onStepError: function() { alert("Программа завершается"); quickTip.stop(); },
+    onTriggerClick: function() { alert("onTriggerClick()"); },
+    onSkip: function () { console.log("options.onSkip() Обработка конца программы, шаг - " + quickTip.getStep()); },
+    onEnd: function () { console.log("options.onEnd() Обработка конца программы, шаг - " + quickTip.getStep()); },
+    triggerActive: false,
+    errorTimeout: 5,
   });
 
   // Необязательно
@@ -269,51 +274,50 @@
 
   quickTip.set([
     {
-      object: ".text-muted.sasesds_123",
-      title: 'Subscribe',
-      text: 'Здесь вы можете подписаться',
-      button_next: 'Продолжить',
+      object: ".templateText-muted.sasesds_123",
+      templateTitle: 'Subscribe',
+      templateText: 'Здесь вы можете подписаться',
+      templateButtonNext: 'Продолжить',
       buttonPreviousActive: false,
-
       onClick: function() { console.log("quickTip.stop()"); quickTip.stop(); },
     },
     {
       object: ".sasesd",
-      title: 'Поиск',
-      text: 'Здесь вы можете найти что-нибудь',
+      templateTitle: 'Поиск',
+      templateText: 'Здесь вы можете найти что-нибудь',
     },
     {
       object: '.a-bla',
-      title: 'Навигация',
-      text: 'Здесь вы можете перемещатсья по разным разделам сайта. Продолжить обучениее?',
+      templateTitle: 'Навигация',
+      templateText: 'Здесь вы можете перемещаться по разным разделам сайта. Продолжить обучение?',
       
       onStep: function() { console.log("data.onStep() " + quickTip.getStep()); }
     },
     {
       object: '.b-bla',
-      title: 'Это слайдер',
-      text: 'Здесь слайдер сайта, новостная лента и тд. Продолжить обучениее?',
+      templateTitle: 'Это слайдер',
+      templateText: 'Здесь слайдер сайта, новостная лента и тд. Продолжить обучениее?',
     },
     {
       object: '.c-bla',
-      title: 'Пост',
-      text: 'Здесь пишут что-то интересное, важная информация и тд',
+      templateTitle: 'Пост',
+      templateText: 'Здесь пишут что-то интересное, важная информация и тд.',
     },
     {
       object: '.d-bla',
-      title: 'Титульник текста',
-      text: 'Это важный заголовок самого текста, имеет класс d-bla.',
+      templateTitle: 'Титульник текста',
+      templateText: 'Это важный заголовок самого текста, имеет класс d-bla.',
     },
     {
       object: '.e-bla',
-      title: 'Второй пост',
-      text: 'Это важный заголовок второго поста, имеет класс e-bla.',        
+      templateTitle: 'Второй пост',
+      templateText: 'Это важный заголовок второго поста, имеет класс e-bla.',        
     },
     {
       object: '.f-bla',
-      title: 'Это подвал',
-      text: 'Здесб ничего полезного, можносделать красиво, можно не делать красиво, все зависит от вас.',
-      button_next: 'Завершить',
+      templateTitle: 'Это подвал',
+      templateText: 'Здесь ничего полезного, можно сделать красиво, можно не делать красиво, все зависит от вас.',
+      templateButtonNext: 'Завершить',
       buttonStopActive: false,
       onStep: function() { /* console.log("data.onStep() " + quickTip.getStep()); */ }
     }

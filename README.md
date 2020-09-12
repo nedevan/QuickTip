@@ -1,5 +1,5 @@
 # QuickTip
-Библиотека QuickTip “быстрые подсказки” создавалась независимой и поэтому не помешает не одной технологии, используемой в проекте такие как (Vue.js, React.js, Angular.js, Query), так как была написана на чистом JavaScript. 
+Библиотека QuickTip “быстрые подсказки” создавалась независимой и поэтому не помешает не одной технологии, используемой в проекте такие как (Vue.js, React.js, Angular.js, jQuery), так как была написана на чистом JavaScript. 
 
 ## Пример Создания Темплейта
 Сейчас мы создадим темплейт, который будет служить нашей подсказкой.
@@ -8,73 +8,42 @@
 
 ### Список id идентификаторов
 Эти id идентификаторы частично должны присутствовать в темплейте:
-* `quickTip_title`              - на блок с титульником
-* `quickTip_text`               - на блок с текстом
-* `quickTip_next`               - на кнопку Далее
-* `quickTip_previous`           - на кнопку Предыдущая подсказка
-* `quickTip_stop`               - на кнопку Пропустить
-* `quickTip_indicator`          - счетчик
-* `quickTip_tail`               - хвостик
+* `quick-tip-title`              - на блок с титульником
+* `quick-tip-text`               - на блок с текстом
+* `quick-tip-next`               - на кнопку Далее
+* `quick-tip-previous`           - на кнопку Предыдущая подсказка
+* `quick-tip-stop`               - на кнопку Пропустить
+* `quick-tip-indicator`          - счетчик
+* `quick-tip-tail`               - хвостик
 
 ### Пример, создаем темлейт в HTML:
 Вы можеет создать любой темплейт, но саблюдайте правила CSS и при красиво сверстаном темплейте библиотека поможет вам сделать все красиво на странице.
 ```html
-    <div class="quick_tip_block">
-            
-        <!-- Хвостик темплейта -->
-        <div id="quickTip_tail" class="quick_tip_tail"></div>
+    <div class="quick-tip-block">
 
-        <div class="quick_tip_head">
+        <!-- Хвостик -->
+        <div id="quick-tip-tail" class="quick-tip-tail"></div>
 
-            <!-- Титульник -->
-            <div id="quickTip_title" class="quick_tip_title">Меню</div>
-
-            <div class="quick_tip_indicator">
-
-                <!-- Кнопка шаг назад -->
-                <i id="quickTip_previous" class="fa fa-chevron-left" aria-hidden="true"></i>
-
-                <!-- Индикатор шага -->
-                <span id="quickTip_indicator">1 из 3</span>
+        <!-- Шапка -->
+        <div class="quick-tip-head">
+            <div id="quick-tip-title" class="quick-tip-title">Меню</div>
+            <div class="quick-tip-indicator">
+                <i id="quick-tip-previous" class="fa fa-chevron-left" aria-hidden="true"></i>
+                <span id="quick-tip-indicator">1 из 3</span>
             </div>
         </div>
 
-        <!-- Основной текст -->
-        <div id="quickTip_text" class="quick_tip_text">Кнопка фхода, нужна для того чтобы войти</div>
+        <!-- Текст -->
+        <div id="quick-tip-text" class="quick-tip-text">
+            Кнопка фхода, нужна для того чтобы войти
+        </div>
 
-        <div class="quick_tip_footer">
-
-            <!-- Кнопка пропустить -->
-            <a href="#" id="quickTip_stop">Пропустить</a>
-
-            <!-- Кнопка Далее -->
-            <button id="quickTip_next">Далее</button>
+        <!-- Кнопки -->
+        <div class="quick-tip-footer">
+            <a href="#" id="quick-tip-stop">Пропустить</a>
+            <button id="quick-tip-next">Далее</button>
         </div>
     </div>
-```
-
-### Пример, создаем темлейт в JavaScript:
-```javascript
-
-    let template = `
-        <div class="quick_tip_block">
-
-            <div id="quickTip_tail" class="quick_tip_tail"></div>
-
-            <div class="quick_tip_head">
-                <div id="quickTip_title" class="quick_tip_title">Меню</div>
-                <div class="quick_tip_indicator">
-                    <i id="quickTip_previous" class="fa fa-chevron-left" aria-hidden="true"></i>
-                    <span id="quickTip_indicator">1 из 3</span>
-                </div>
-            </div>
-            <div id="quickTip_text" class="quick_tip_text">Кнопка фхода, нужна для того чтобы войти</div>
-            <div class="quick_tip_footer">
-                <a href="#" id="quickTip_stop">Пропустить</a>
-                <button id="quickTip_next">Далее</button>
-            </div>
-        </div>`;
-    
 ```
 
 # События, которые можно вызвать в конструкторе (не обязательно)
@@ -127,19 +96,19 @@
         object: "#id",
 
         /* Текст в блоке title (не обязательно) по умолчанию пусто */
-        title: "Титульная надпись",
+        templateTitle: "Титульная надпись",
 
         /* Текст в блоке text (не обязательно) по умолчанию пусто */
-        text: "Привет, это подсказка, не понятно зачем она нужна",
+        templateText: "Привет, это подсказка, не понятно зачем она нужна",
 
         /* Текст кнопки Пропустить (не обязательно) по умолчанию "Пропустить" */
-        button_stop: "Пропустить",
+        templateButtonStop: "Пропустить",
 
         /* Текст кнопки Далее (не обязательно) */
-        button_next: "Далее", 
+        templateButtonNext: "Далее", 
 
         /* Текст кнопки вернуться (не обязательно) по умолчанию "Пропустить" */
-        button_previous: "Пропустить",
+        templateButtonPrevious: "Пропустить",
 
         /* Смещение относительно шага (не обязательно) по умолчанию "top: 0, left: 0" */
         offset: { top: 0, left: 0 },
@@ -151,7 +120,7 @@
         MARGIN_OBJECT: 4,
 
         /* Активация Хвоста темплейта (не обязательно) по умолчанию "true" */
-        tailsActive: true,
+        tailActive: true,
 
         /* Активация перекрывающих блоков (не обязательно) по умолчанию "true" */
         blocksActive: true,
@@ -181,22 +150,19 @@
 
     // Наш тестовый темплейт, читайте id идентификаторы (Ниже)
     let template = `
-        <div class="quick_tip_block">
-            
-            <!-- Хвостик темплейта -->
-            <div id="quickTip_tail" class="quick_tip_tail"></div>
-
-            <div class="quick_tip_head">
-                <div id="quickTip_title" class="quick_tip_title">Меню</div>
-                <div class="quick_tip_indicator">
-                    <i id="quickTip_previous" class="fa fa-chevron-left" aria-hidden="true"></i>
-                    <span id="quickTip_indicator">1 из 3</span>
+        <div class="quick-tip-block">
+            <div id="quick-tip-tail" class="quick-tip-tail"></div>
+            <div class="quick-tip-head">
+                <div id="quick-tip-title" class="quick-tip-title">Меню</div>
+                <div class="quick-tip-indicator">
+                    <i id="quick-tip-previous" class="fa fa-chevron-left" aria-hidden="true"></i>
+                    <span id="quick-tip-indicator">1 из 3</span>
                 </div>
             </div>
-            <div id="quickTip_text" class="quick_tip_text">Кнопка фхода, нужна для того чтобы войти</div>
-            <div class="quick_tip_footer">
-                <a href="#" id="quickTip_stop">Пропустить</a>
-                <button id="quickTip_next">Далее</button>
+            <div id="quick-tip-text" class="quick-tip-text">Кнопка фхода, нужна для того чтобы войти</div>
+            <div class="quick-tip-footer">
+                <a href="#" id="quick-tip-stop">Пропустить</a>
+                <button id="quick-tip-next">Далее</button>
             </div>
         </div>`;
 
