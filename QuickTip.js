@@ -101,12 +101,15 @@
                 stepNextBool = true;
                 stepPrevious = false;
 
-                if(objectOld !== null) objectOld.removeEventListener("click", objectClick, false);
+                if(objectOld !== null) {
+                    objectOld.removeEventListener("click", objectClick, false);
+                }
 
                 // options.onNext()
                 if(options != null && options.onNext !== undefined) {
-
-                    if(typeof options.onNext === "function") options.onNext();
+                    if(typeof options.onNext === "function") {
+                        options.onNext();
+                    }
 
                     else throw "Неверно объявлена функция onNext()";
                 }
@@ -123,7 +126,9 @@
         // Предыдущий шаг
         QuickTip.prototype.previousStep = function() {
 
-            if(objectOld !== null) objectOld.removeEventListener("click", objectClick, false);
+            if(objectOld !== null) {
+                objectOld.removeEventListener("click", objectClick, false);
+            }
             
             if(stepIteration > 0) {
 
@@ -132,8 +137,9 @@
 
                 // options.onPrevious()
                 if(options != null && options.onPrevious !== undefined) {
-
-                    if(typeof options.onPrevious === "function") options.onPrevious();
+                    if(typeof options.onPrevious === "function") {
+                        options.onPrevious();
+                    }
 
                     else throw "Неверно объявлена функция onPrevious()";
                 }
@@ -150,7 +156,9 @@
 
             stepIteration = step;
 
-            if(bool) this.step();
+            if(bool) {
+                this.step();
+            }
         }
         
         // Получить шаг
@@ -237,16 +245,18 @@
 
                 // quickTipData.onStep()
                 if(quickTipData[stepIteration].onStep !== undefined && eventActive) {
-
-                    if(typeof quickTipData[stepIteration].onStep === "function") quickTipData[stepIteration].onStep();
+                    if(typeof quickTipData[stepIteration].onStep === "function") {
+                        quickTipData[stepIteration].onStep();
+                    }
     
                     else throw "Неверно объявлена функция onStep()";
                 }
 
                 // options.onStep()
                 else if(options != null && options.onStep !== undefined && eventActive) {
-
-                    if(typeof options.onStep === "function") options.onStep();
+                    if(typeof options.onStep === "function") {
+                        options.onStep();
+                    }
 
                     else throw "Неверно объявлена функция onStep()";
                 }
@@ -263,17 +273,22 @@
                             // options.onStepError()
                             if(options != null && options.onStepError !== undefined && eventActive) {
 
-                                if(typeof options.onStepError === "function") options.onStepError();
+                                if(typeof options.onStepError === "function") {
+                                    options.onStepError();
+                                }
                 
                                 else throw "Неверно объявлена функция onStepError()";
                             }
 
-                            if(stepNextBool) { this.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; } 
+                            if(stepNextBool) {
+
+                                this.nextStep(); 
+                                throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                            } 
 
                             if(stepPrevious) { 
 
                                 let check = checkToDoPrevious(quickTipData, stepIteration + 1);
-                                
                                 if(check.bool) {
 
                                     this.setStep(check.id, true); 
@@ -287,7 +302,11 @@
                                 }
                             }
 
-                            if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; }
+                            if(!stepNextBool && !stepPrevious) {
+
+                                that.nextStep(); 
+                                throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                            }
                         }
 
                         else {
@@ -297,7 +316,9 @@
 
                             setTimeout(function() {
 
-                                if(!quickTipRun) return;
+                                if(!quickTipRun) {
+                                    return;
+                                }
                             
                                 preloaderIteration++;
     
@@ -307,14 +328,18 @@
                                     // options.onStepError()
                                     if(options != null && options.onStepError !== undefined && eventActive) {
     
-                                        if(typeof options.onStepError === "function") options.onStepError();
+                                        if(typeof options.onStepError === "function") {
+                                            options.onStepError();
+                                        }
                         
                                         else throw "Неверно объявлена функция onStepError()";
                                     }
-    
-                                    if(!quickTipRun) return;
                                     
-                                    if(stepNextBool) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; } 
+                                    if(stepNextBool) {
+
+                                        that.nextStep(); 
+                                        throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                    } 
     
                                     if(stepPrevious) {
 
@@ -333,7 +358,11 @@
                                         }
                                     }
     
-                                    if(!stepNextBool && !stepPrevious) { that.nextStep(); throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; }
+                                    if(!stepNextBool && !stepPrevious) { 
+
+                                        that.nextStep(); 
+                                        throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                    }
                                 }
     
                                 that.step();
@@ -348,16 +377,18 @@
 
                         // quickTipData.onClick()
                         if(quickTipData[stepIteration].onClick !== undefined && eventActive) {
-   
-                            if(typeof quickTipData[stepIteration].onClick === "function") objectClick = quickTipData[stepIteration].onClick;
+                            if(typeof quickTipData[stepIteration].onClick === "function") {
+                                objectClick = quickTipData[stepIteration].onClick;
+                            }
 
                             else throw "Неверно объявлена функция onClick()";
                         }
 
                         // options.onClick()
                         else if(options != null && options.onClick !== undefined && eventActive) {
-
-                            if(typeof options.onClick === "function") objectClick = options.onClick;
+                            if(typeof options.onClick === "function") {
+                                objectClick = options.onClick;
+                            }
                             
                             else throw "Неверно объявлена функция onClick()"; 
                         }
@@ -368,22 +399,26 @@
                         setTemplateTarget(objectCoordinate, getTemplateCoordinate());
                         setTemplateData(quickTipData[stepIteration]);
 
-                        if(!this.triggerActive) destroyTrigger();
+                        if(!this.triggerActive) {
+                            destroyTrigger();
+                        }
 
                         if(this.triggerActive) {
 
                             // quickTipData.triggerOnClick()
                             if(quickTipData[stepIteration].triggerOnClick !== undefined) {
-
-                                if(typeof quickTipData[stepIteration].triggerOnClick === "function") triggerOnClick = quickTipData[stepIteration].triggerOnClick;
+                                if(typeof quickTipData[stepIteration].triggerOnClick === "function") {
+                                    triggerOnClick = quickTipData[stepIteration].triggerOnClick;
+                                }
                 
                                 else throw "Неверно объявлена функция triggerOnClick()";
                             }
 
                             // options.triggerOnClick()
                             else if(options != null && options.triggerOnClick !== undefined) {
-
-                                if(typeof options.triggerOnClick === "function") triggerOnClick = options.triggerOnClick;
+                                if(typeof options.triggerOnClick === "function") {
+                                    triggerOnClick = options.triggerOnClick;
+                                }
                 
                                 else throw "Неверно объявлена функция triggerOnClick()";
                             }
@@ -397,7 +432,9 @@
                         templateButtonNext.style.display = this.buttonNextActive ? "block" : "none";
                         templateButtonPrevious.style.display = this.buttonPreviousActive ? "block" : "none";
                 
-                        if(!this.blocksActive && blockRender) destroyBlocks();
+                        if(!this.blocksActive && blockRender) {
+                            destroyBlocks();
+                        }
                         
                         if(this.blocksActive) {
                             
@@ -406,12 +443,13 @@
                             renderBlocks();
                         }
                         
-                        if(!this.tailActive && blockRender) destroyTail();
+                        if(!this.tailActive && blockRender) {
+                            destroyTail();
+                        }
 
                         if(this.tailActive) {
                             
                             initTail();
-
                             setTimeout(function() {
 
                                 setTailCoordinate(objectCoordinate, getTemplateCoordinate());
@@ -421,9 +459,7 @@
                         
                         stepNextBool = false;
                         stepPrevious = false;
-
                         object.addEventListener("click", objectClick, false);
-
                         objectOld = object;
                     }
                 }, this.delay);
@@ -439,15 +475,18 @@
 
             // onStart()
             if(!preloaderRender && options != null && options.onStart !== undefined) {
-
-                if(typeof options.onStart === "function") options.onStart();
+                if(typeof options.onStart === "function") {
+                    options.onStart();
+                }
 
                 else throw "Неверно объявлена функция onStart()";
             }
 
             quickTipRun = true;
             
-            if(step === null) this.setStep(0);
+            if(step === null) {
+                this.setStep(0);
+            }
 
             else this.setStep(step);
 
@@ -458,7 +497,6 @@
         QuickTip.prototype.set = function(data) {
 
             quickTipData = data;
-
             this.step();
         }
 
@@ -467,8 +505,9 @@
 
             // options.onEnd()
             if(options != null && options.onEnd !== undefined) {
-
-                if(typeof options.onEnd === "function") options.onEnd();
+                if(typeof options.onEnd === "function") {
+                    options.onEnd();
+                }
 
                 else throw "Неверно объявлена функция onEnd()";
             }
@@ -481,8 +520,9 @@
 
             // options.onSkip()
             if(options != null && options.onSkip !== undefined) {
-
-                if(typeof options.onSkip === "function") options.onSkip();
+                if(typeof options.onSkip === "function") {
+                    options.onSkip();
+                }
 
                 else throw "Неверно объявлена функция onSkip()";
             }
@@ -508,11 +548,13 @@
             };
 
             step = step - 1;
-            if(step < 0) step = 0;
+            if(step < 0) {
+                step = 0;
+            }
 
             for(let i = step; i >= 0; i--) {
-
                 if(getObject(array[i].object) !== null) {
+
                     result.id = i;
                     result.bool = true;
                     break; 
@@ -523,22 +565,18 @@
         }
 
         function getDocumentWidth() {
-
             return document.body.scrollWidth;
         }
 
-        function getDocumentHeight() {
-            
+        function getDocumentHeight() {     
             return document.body.scrollHeight;
         }
 
         function getWindowWidth() {
-
             return document.documentElement.clientWidth;
         }
 
         function getWindowHeight() {
-
             return document.documentElement.clientHeight;
         }
 
@@ -565,7 +603,9 @@
                     // querySelectorAll не возвращает null
                     object = document.querySelectorAll(selector)[id];
 
-                    if(object === undefined) object = null;
+                    if(object === undefined) {
+                        object = null;
+                    }
                 }
                 
                 // querySelector возвращает null, если не найдено
@@ -679,13 +719,11 @@
 
                     // Если малеький экран
                     if(getDocumentWidth() < 374) {
-
                         allowRange = allowRange / 2;  
                     }
 
                     // Cередина на маленьких экранах (Должно перебить условие "Самый левый блок")
                     if(objectСoordinate.centerLeft === getDocumentWidth() / 2) {
-
                         template.style.left = objectСoordinate.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
                     }
 
@@ -693,7 +731,9 @@
                     else if(objectСoordinate.centerLeft < allowRange) {
 
                         // Если вплотную к экрану
-                        if(objectСoordinate.OffsetLeft < 10) template.style.left = objectСoordinate.OffsetLeft + 10 + that.offset.left + "px";
+                        if(objectСoordinate.OffsetLeft < 10) {
+                            template.style.left = objectСoordinate.OffsetLeft + 10 + that.offset.left + "px";
+                        }
                         
                         else template.style.left = objectСoordinate.OffsetLeft - marginLeft / 2 + that.offset.left + "px";
                     }
@@ -702,14 +742,15 @@
                     else if(objectСoordinate.centerLeft > getDocumentWidth() - allowRange) {
 
                         // Если вплотную к экрану
-                        if(objectСoordinate.OffsetLeft > getDocumentWidth() - 10) template.style.left = objectСoordinate.OffsetRight - coordinateTemplate.width - 10 + that.offset.left + "px";
-
+                        if(objectСoordinate.OffsetLeft > getDocumentWidth() - 10) {
+                            template.style.left = objectСoordinate.OffsetRight - coordinateTemplate.width - 10 + that.offset.left + "px";
+                        }
+                        
                         else template.style.left = objectСoordinate.OffsetRight - coordinateTemplate.width + marginRight / 2 + that.offset.left + "px";
                     }
 
                     // Середина
                     else {
-
                         template.style.left = objectСoordinate.centerLeft - coordinateTemplate.width / 2 + that.offset.left + "px";
                     }
                     
@@ -718,7 +759,6 @@
 
                         tailTopBool = false;
                         tailBottomBool = true;
-                        
                         template.style.top = objectСoordinate.OffsetTop - coordinateTemplate.height - that.MARGIN_OBJECT * 2 + that.offset.top + "px";
                     }
     
@@ -726,13 +766,11 @@
 
                         tailTopBool = true;
                         tailBottomBool = false;
-            
                         template.style.top = objectСoordinate.OffsetTop + objectСoordinate.height + that.MARGIN_OBJECT * 2 + that.offset.top + "px";
                     }
 
                     // Если темлейт не влезает из-за большой цели
                     if(getWindowHeight() / 1.3 - coordinateTemplate.height < objectСoordinate.height) {
-
                         template.style.top = objectСoordinate.centerTop + that.offset.top +  "px";
                     }
 
@@ -755,6 +793,7 @@
         function destroyTemplate() {
 
             if(template !== null) {
+                
                 template.remove();
                 template = null;
             }
@@ -865,7 +904,7 @@
                 document.body.append(blockTop);
                 document.body.append(blockRight);
                 document.body.append(blockBottom);
-
+                
                 blockRender = true;
             }
         }
@@ -918,7 +957,9 @@
 
         function renderTrigger() {
 
-            if(that.triggerActive) document.body.append(trigger);
+            if(that.triggerActive) {
+                document.body.append(trigger);
+            }
 
             else destroyTrigger();
         }
@@ -926,6 +967,7 @@
         function destroyTrigger() { 
 
             if(trigger != null) { 
+
                 trigger.remove(); 
                 trigger = null; 
             }
@@ -935,7 +977,9 @@
         
             if(tail === null) {
 
-                if(tailTemp === null) tailTemp = document.querySelector("#quick-tip-tail");
+                if(tailTemp === null) {
+                    tailTemp = document.querySelector("#quick-tip-tail");
+                }
 
                 if(tailTemp !== null) {
 
@@ -973,7 +1017,6 @@
             if(that.tailActive && tailRender === false) {
         
                 document.body.append(tail);
-        
                 tailRender = true;
             }
         }
@@ -981,6 +1024,7 @@
         function destroyTail() {
         
             if(tail !== null) {
+
                 tail.remove();
                 tail = null;
             }
@@ -990,7 +1034,9 @@
 
         function initPreloader() {
 
-            if(preloader === null) preloader = preloaderUser;
+            if(preloader === null) {
+                preloader = preloaderUser;
+            }
         }
 
         function renderPreloader() {
@@ -998,14 +1044,14 @@
             if(preloaderRender === false) {
 
                 document.body.append(preloader);
-
                 preloaderRender = true;
             }
         }
 
         function destroyPreloader() {
 
-            if(preloader != null) { 
+            if(preloader != null) {
+
                 preloader.remove(); 
                 preloader = null; 
             }
@@ -1029,7 +1075,9 @@
             stepNextBool = false;
             stepPrevious = false;
 
-            if(objectOld !== null) objectOld.removeEventListener("click", objectClick, false);
+            if(objectOld !== null) {
+                objectOld.removeEventListener("click", objectClick, false);
+            }
         }
 
         let onresizeBool = false,
@@ -1038,7 +1086,6 @@
         window.onresize = function(event) {
 
             onresizeBool = true;
-
             clearTimeout(timerId);
 
             if(quickTipRun && quickTipData.length > 0 && onresizeBool) {
@@ -1050,7 +1097,6 @@
                 timerId = setTimeout(function() {
                     
                     that.step(false);
-
                     onresizeBool = false;
                 }, 600);
             } 
@@ -1060,7 +1106,9 @@
 
             event = event || window.event;
 
-            if(quickTipRun && event.keyCode > 36 && event.keyCode < 41 || event.keyCode > 32 && event.keyCode < 37) return false; 
+            if(quickTipRun && event.keyCode > 36 && event.keyCode < 41 || event.keyCode > 32 && event.keyCode < 37) {
+                return false;
+            }
         }
     };
 
