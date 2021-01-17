@@ -10,7 +10,7 @@
      * @param {String} html     template подсказки
      * @param {Object} options  Предварительные настройки
      */
-    var QuickTip = function(html, options = null) {
+    let QuickTip = function(html, options = null) {
 
         /**
          * Задержка счетчика в миллисекундах
