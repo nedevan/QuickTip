@@ -1,4 +1,4 @@
-.quick-tip-block { transition: all .5s; position: absolute; z-index: 9980; top: 50%; left: 50%; transform: translate(-125px, -50px); width: 250px; padding: 10px; border-radius: 5px; box-sizing: content-box; display: flex; align-items: center; justify-content: center; flex-direction: column; background-color: #0081EE; color: #fff;  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
+.quick-tip-block { background-color: #0081EE; color: #fff; transition: all .5s; position: absolute; z-index: 9980; top: 50%; left: 50%; transform: translate(-125px, -50px); width: 250px; padding: 10px; border-radius: 5px; box-sizing: content-box; display: flex; align-items: center; justify-content: center; flex-direction: column; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
 
 .quick-tip-block div { margin: 5px 0; }
 
@@ -8,13 +8,11 @@
 
 .quick-tip-footer { width: 100%; display: flex; align-items: center; justify-content: space-between; flex-direction: row; }
 
-.quick-tip-footer a { transition: all .2s; font-size: 14px; font-weight: 300; cursor: pointer; color: #fff; }
+.quick-tip-footer a { color: #fff; font-size: 14px; font-weight: 300; cursor: pointer; }
 
-.quick-tip-footer a:hover { color: #163aa5; font-size: 16; font-weight: 600; }
+.quick-tip-footer button { background-color: #fff; color: #0081EE; padding: 3px 12px; transition: all .2s; outline: none; border-radius: 5px; border: unset; font-size: 14px; font-weight: 600; cursor: pointer; margin: 0; }
 
-.quick-tip-footer button { padding: 3px 8px; transition: all .2s; outline: none; border-radius: 5px; border: unset; background-color: #fff; font-size: 14px; font-weight: 300; color: #0081EE; cursor: pointer; margin: 0; }
-
-.quick-tip-footer button:hover { background-color: #23b113; color: #fff; font-size: 16; font-weight: 600; }
+.quick-tip-footer button:hover { background-color: #23b113; color: #fff; }
 
 .quick-tip-indicator { display: flex; align-items: center; justify-content: space-between; width: auto; font-size: 16px; font-weight: 600; }
 
@@ -24,7 +22,7 @@
 
 .quick-tip-title { display: flex; width: 185px; }
 
-.quick-tip-tail { position: absolute; border: 10px solid transparent; border-bottom-color: #0081EE; top: 0px; z-index: 9960; }
+.quick-tip-tail { border: 10px solid transparent; border-bottom-color: #0081EE; position: absolute; top: 0px; z-index: 9960; }
 
 @media screen and (max-width: 374px) {
 
