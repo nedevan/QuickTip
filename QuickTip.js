@@ -219,11 +219,8 @@
                  * options.onNext()
                  */
                 if(options != null && options.onNext !== undefined) {
-                    if(typeof options.onNext === "function") {
-                        options.onNext();
-                    } else {
-                        throw "Неверно объявлена функция onNext()";
-                    } 
+                    _userException("Неверно объявлена функция onNext()", typeof options.onNext !== "function");
+                    options.onNext();
                 }
 
                 stepIteration++;
@@ -253,11 +250,8 @@
                  * options.onPrevious()
                  */
                 if(options != null && options.onPrevious !== undefined) {
-                    if(typeof options.onPrevious === "function") {
-                        options.onPrevious();
-                    } else {
-                        throw "Неверно объявлена функция onPrevious()";
-                    }
+                    _userException("Неверно объявлена функция onPrevious()", typeof options.onPrevious !== "function");
+                    options.onPrevious();
                 }
 
                 stepIteration--;
@@ -296,7 +290,6 @@
          * Выполнить шаг
          *
          * TODO: Оптимизировать инициализацию настроек
-         * TODO: Сделать метод _UserException(message, bool)
          * @param {Boolean|null} isEventActive
          * @public
          */
@@ -377,22 +370,16 @@
                  * quickTipData.onStep()
                  */
                 if(quickTipData[stepIteration].onStep !== undefined && isEventActive) {
-                    if(typeof quickTipData[stepIteration].onStep === "function") {
-                        quickTipData[stepIteration].onStep();
-                    } else {
-                        throw "Неверно объявлена функция onStep()";
-                    }
+                    _userException("Неверно объявлена функция onStep()", typeof quickTipData[stepIteration].onStep !== "function");
+                    quickTipData[stepIteration].onStep();
                 }
 
                 /**
                  * options.onStep()
                  */
                 else if(options != null && options.onStep !== undefined && isEventActive) {
-                    if(typeof options.onStep === "function") {
-                        options.onStep();
-                    } else {
-                        throw "Неверно объявлена функция onStep()";
-                    }
+                    _userException("Неверно объявлена функция onStep()", typeof options.onStep !== "function");
+                    options.onStep();
                 }
                 
                 setTimeout(function() {
@@ -406,32 +393,29 @@
                              * options.onStepError()
                              */
                             if(options != null && options.onStepError !== undefined && isEventActive) {
-                                if(typeof options.onStepError === "function") {
-                                    options.onStepError();
-                                } else {
-                                    throw "Неверно объявлена функция onStepError()";
-                                }
+                                _userException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
+                                options.onStepError();
                             }
 
                             if(stepNextBool) {
-                                this.nextStep(); 
-                                throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                this.nextStep();
+                                _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                             } 
 
                             if(stepPrevious) {
                                 let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
                                 if(check.bool) {
-                                    this.setStep(check.id, true); 
-                                    throw 'Шаг с элементом "' + quickTipData[stepIteration + 1].object + '" не найден и будет пропущен.'; 
+                                    this.setStep(check.id, true);
+                                    _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                 } else {
-                                    this.setStep(stepIteration + 1, true); 
-                                    throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                    this.setStep(stepIteration + 1, true);
+                                    _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                 }
                             }
 
                             if(!stepNextBool && !stepPrevious) {
-                                that.nextStep(); 
-                                throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                that.nextStep();
+                                _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                             }
                         } else {
                             _initPreloader();
@@ -451,32 +435,29 @@
                                      * options.onStepError()
                                      */
                                     if(options != null && options.onStepError !== undefined && isEventActive) {
-                                        if(typeof options.onStepError === "function") {
-                                            options.onStepError();
-                                        } else {
-                                            throw "Неверно объявлена функция onStepError()";
-                                        }
+                                        _userException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
+                                        options.onStepError();
                                     }
                                     
                                     if(stepNextBool) {
-                                        that.nextStep(); 
-                                        throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
-                                    } 
+                                        that.nextStep();
+                                        _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                    }
     
                                     if(stepPrevious) {
                                         let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
                                         if(check.bool) {
-                                            that.setStep(check.id, true); 
-                                            throw 'Шаг с элементом "' + quickTipData[stepIteration + 1].object + '" не найден и будет пропущен.'; 
+                                            that.setStep(check.id, true);
+                                            _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                         } else {
-                                            that.setStep(stepIteration + 1, true); 
-                                            throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                            that.setStep(stepIteration + 1, true);
+                                            _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                         }
                                     }
     
                                     if(!stepNextBool && !stepPrevious) {
-                                        that.nextStep(); 
-                                        throw 'Шаг с элементом "' + quickTipData[stepIteration - 1].object + '" не найден и будет пропущен.'; 
+                                        that.nextStep();
+                                        _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                     }
                                 }
                                 that.step();
@@ -490,22 +471,16 @@
                          * quickTipData.onClick()
                          */
                         if(quickTipData[stepIteration].onClick !== undefined && isEventActive) {
-                            if(typeof quickTipData[stepIteration].onClick === "function") {
-                                objectClick = quickTipData[stepIteration].onClick;
-                            } else {
-                                throw "Неверно объявлена функция onClick()";
-                            }
+                            _userException("Неверно объявлена функция onClick()", typeof quickTipData[stepIteration].onClick !== "function");
+                            objectClick = quickTipData[stepIteration].onClick;
                         }
 
                         /**
                          * options.onClick()
                          */
                         else if(options != null && options.onClick !== undefined && isEventActive) {
-                            if(typeof options.onClick === "function") {
-                                objectClick = options.onClick;
-                            } else {
-                                throw "Неверно объявлена функция onClick()"; 
-                            }
+                            _userException("Неверно объявлена функция onClick()", typeof options.onClick !== "function");
+                            objectClick = options.onClick;
                         }
 
                         _initTemplate(html);
@@ -524,22 +499,16 @@
                              * quickTipData.triggerOnClick()
                              */
                             if(quickTipData[stepIteration].triggerOnClick !== undefined) {
-                                if(typeof quickTipData[stepIteration].triggerOnClick === "function") {
-                                    triggerOnClick = quickTipData[stepIteration].triggerOnClick;
-                                } else {
-                                    throw "Неверно объявлена функция triggerOnClick()";
-                                }
+                                _userException("Неверно объявлена функция triggerOnClick()", typeof quickTipData[stepIteration].triggerOnClick !== "function");
+                                triggerOnClick = quickTipData[stepIteration].triggerOnClick;
                             }
 
                             /**
                              * options.triggerOnClick()
                              */
                             else if(options != null && options.triggerOnClick !== undefined) {
-                                if(typeof options.triggerOnClick === "function") {
-                                    triggerOnClick = options.triggerOnClick;
-                                } else {
-                                    throw "Неверно объявлена функция triggerOnClick()";
-                                }
+                                _userException("Неверно объявлена функция triggerOnClick()", typeof options.triggerOnClick !== "function");
+                                triggerOnClick = options.triggerOnClick;
                             }
 
                             _initTrigger();
@@ -597,11 +566,8 @@
              * onStart()
              */
             if(!preloaderRender && options != null && options.onStart !== undefined) {
-                if(typeof options.onStart === "function") {
-                    options.onStart();
-                } else {
-                    throw "Неверно объявлена функция onStart()";
-                }
+                _userException("Неверно объявлена функция onStart()", typeof options.onStart !== "function");
+                options.onStart();
             }
 
             quickTipRun = true;
@@ -636,11 +602,8 @@
              * options.onEnd()
              */
             if(options != null && options.onEnd !== undefined) {
-                if(typeof options.onEnd === "function") {
-                    options.onEnd();
-                } else {
-                    throw "Неверно объявлена функция onEnd()";
-                }
+                _userException("Неверно объявлена функция onEnd()", typeof options.onEnd !== "function");
+                options.onEnd();
             }
 
             end();
@@ -656,11 +619,8 @@
              * options.onSkip()
              */
             if(options != null && options.onSkip !== undefined) {
-                if(typeof options.onSkip === "function") {
-                    options.onSkip();
-                } else {
-                    throw "Неверно объявлена функция onSkip()";
-                }
+                _userException("Неверно объявлена функция onSkip()", typeof options.onSkip !== "function");
+                options.onSkip();
             }
 
             end();
@@ -806,9 +766,9 @@
                 objectClientRect.centerLeft = objectClientRect.left + pageXOffset + objectClientRect.width / 2;
 
                 return objectClientRect;
-            } else {
-                return null;
             }
+
+            return null;
         }
         
         /**
@@ -1340,6 +1300,19 @@
             }
         }
 
+        /**
+         * Пользовательское исключение
+         *
+         * @param message Сообщение при исключении
+         * @param condition Условие, при котором должно сработать исключение
+         * @private
+         */
+        function _userException(message, condition) {
+            if(condition) {
+                throw message;
+            }
+        }
+
         let onresizeBool = false,
             timerId = null;
 
@@ -1372,14 +1345,85 @@
         function _eventKeyDown(event) {
             event = event || window.event;
 
-            if(quickTipRun && event.keyCode > 36 && event.keyCode < 41 || event.keyCode > 32 && event.keyCode < 37) {
-                return false;
+            if(quickTipRun) {
+                switch(event.keyCode) {
+
+                    /** Press enter */
+                    case 13:
+                        that.nextStep();
+                        break;
+                    
+                    /** Press escape */
+                    case 27:
+                        end();
+                        break;
+                    
+                    /** Press end */
+                    case 35:
+                        end();
+                        break;
+
+                    /** Press space */
+                    case 32:
+                        that.nextStep();
+                        break;
+
+                    /** Press page up */
+                    case 33:
+                        that.previousStep();
+                        break;
+
+                    /** Press page down */
+                    case 34:
+                        that.nextStep();
+                        break;
+
+                    /** Press arrow left */
+                    case 37:
+                        that.previousStep();
+                        break;
+
+                    /** Press arrow up */
+                    case 38:
+                        that.previousStep();
+                        break;
+
+                    /** Press arrow right */
+                    case 39:
+                        that.nextStep();
+                        break;
+
+                    /** Press arrow down */
+                    case 40:
+                        that.nextStep();
+                        break;
+
+                    /** Press numpad 2 */
+                    case 98:
+                        that.nextStep();
+                        break;
+
+                    /** Press numpad 4 */
+                    case 100:
+                        that.previousStep();
+                        break;
+
+                    /** Press numpad 6 */
+                    case 102:
+                        that.nextStep();
+                        break;
+
+                    /** Press numpad 8 */
+                    case 104:
+                        that.previousStep();
+                        break;
+                }
             }
         }
 
         window.addEventListener("resize", _eventResize, true);
 
-        window.addEventListener("resize", _eventKeyDown, true);
+        window.addEventListener("keydown", _eventKeyDown, true);
     };
 
     window.QuickTip = QuickTip;
