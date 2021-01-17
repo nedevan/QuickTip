@@ -404,7 +404,7 @@
 
                             if(stepPrevious) {
                                 let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
-                                if(check.bool) {
+                                if(check.isCanStep) {
                                     this.setStep(check.id, true);
                                     _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                 } else {
@@ -446,7 +446,7 @@
     
                                     if(stepPrevious) {
                                         let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
-                                        if(check.bool) {
+                                        if(check.isCanStep) {
                                             that.setStep(check.id, true);
                                             _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                         } else {
@@ -651,7 +651,7 @@
         function _isCanGoToPrevious(array, step = 0) {
             let result = {
                 id: 0,
-                bool: false
+                isCanStep: false
             };
 
             step = step - 1;
@@ -662,7 +662,7 @@
             for(let i = step; i >= 0; i--) {
                 if(_getObject(array[i].object) !== null) {
                     result.id = i;
-                    result.bool = true;
+                    result.isCanStep = true;
                     break; 
                 }
             }
