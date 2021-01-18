@@ -649,6 +649,7 @@
          * @private
          */
         function _isCanGoToPrevious(array, step = 0) {
+            // TODO: typedef описать
             let result = {
                 id: 0,
                 isCanStep: false
