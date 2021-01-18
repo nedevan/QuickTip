@@ -15,7 +15,7 @@
         /**
          * Задержка счетчика в миллисекундах
          *
-         * @type {number}
+         * @type {Number}
          */
         const DELAY_PRELOADER_ITERATION = 1000;
 
@@ -285,7 +285,7 @@
         QuickTip.prototype.getStep = function() {
             return stepIteration;
         }
-        
+
         /**
          * Выполнить шаг
          *
