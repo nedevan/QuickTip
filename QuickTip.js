@@ -1427,8 +1427,10 @@
             }
         }
 
+        /* Деликатно встраиваем событие Resize (Оно не будет мешать событиям на странице) */
         window.addEventListener("resize", _eventResize, true);
 
+        /* Деликатно встраиваем событие KeyDown (Оно не будет мешать событиям на странице) */
         window.addEventListener("keydown", _eventKeyDown, true);
     };
 
