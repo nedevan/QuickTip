@@ -10,8 +10,7 @@
      * @param {String} html     template подсказки
      * @param {Object} options  Предварительные настройки
      */
-    let QuickTip = function(html, options = null) {
-
+    const QuickTip = function(html, options = null) {
         /**
          * Задержка счетчика в миллисекундах
          *
@@ -38,9 +37,14 @@
          *
          * @type {Number}
          */
-        const DELAY_EVENT_RESIZE = 600;
-
-        let that = this;
+        const DELAY_RESIZE_EVENT = 600;
+        
+        /**
+         * Объект QuickTip
+         * 
+         * @type {QuickTip}
+         */
+        const that = this;
 
         let quickTipData = [],
             quickTipRun = false;
@@ -140,7 +144,8 @@
 
         /**
          * Смещение от заданной позиции
-         *
+         * 
+         * TODO: typedef offset
          * @type {Object}
          * @public
          */
@@ -219,7 +224,7 @@
                  * options.onNext()
                  */
                 if(options != null && options.onNext !== undefined) {
-                    _userException("Неверно объявлена функция onNext()", typeof options.onNext !== "function");
+                    _throwUserException("Неверно объявлена функция onNext()", typeof options.onNext !== "function");
                     options.onNext();
                 }
 
@@ -250,7 +255,7 @@
                  * options.onPrevious()
                  */
                 if(options != null && options.onPrevious !== undefined) {
-                    _userException("Неверно объявлена функция onPrevious()", typeof options.onPrevious !== "function");
+                    _throwUserException("Неверно объявлена функция onPrevious()", typeof options.onPrevious !== "function");
                     options.onPrevious();
                 }
 
@@ -370,7 +375,7 @@
                  * quickTipData.onStep()
                  */
                 if(quickTipData[stepIteration].onStep !== undefined && isEventActive) {
-                    _userException("Неверно объявлена функция onStep()", typeof quickTipData[stepIteration].onStep !== "function");
+                    _throwUserException("Неверно объявлена функция onStep()", typeof quickTipData[stepIteration].onStep !== "function");
                     quickTipData[stepIteration].onStep();
                 }
 
@@ -378,7 +383,7 @@
                  * options.onStep()
                  */
                 else if(options != null && options.onStep !== undefined && isEventActive) {
-                    _userException("Неверно объявлена функция onStep()", typeof options.onStep !== "function");
+                    _throwUserException("Неверно объявлена функция onStep()", typeof options.onStep !== "function");
                     options.onStep();
                 }
                 
@@ -393,29 +398,29 @@
                              * options.onStepError()
                              */
                             if(options != null && options.onStepError !== undefined && isEventActive) {
-                                _userException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
+                                _throwUserException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
                                 options.onStepError();
                             }
 
                             if(stepNextBool) {
                                 this.nextStep();
-                                _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                             } 
 
                             if(stepPrevious) {
                                 let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
                                 if(check.isCanStep) {
                                     this.setStep(check.id, true);
-                                    _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
+                                    _throwUserException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                 } else {
                                     this.setStep(stepIteration + 1, true);
-                                    _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                    _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                 }
                             }
 
                             if(!stepNextBool && !stepPrevious) {
                                 that.nextStep();
-                                _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                             }
                         } else {
                             _initPreloader();
@@ -435,29 +440,29 @@
                                      * options.onStepError()
                                      */
                                     if(options != null && options.onStepError !== undefined && isEventActive) {
-                                        _userException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
+                                        _throwUserException("Неверно объявлена функция onStepError()", typeof options.onStepError !== "function");
                                         options.onStepError();
                                     }
                                     
                                     if(stepNextBool) {
                                         that.nextStep();
-                                        _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                        _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                     }
     
                                     if(stepPrevious) {
                                         let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
                                         if(check.isCanStep) {
                                             that.setStep(check.id, true);
-                                            _userException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
+                                            _throwUserException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
                                         } else {
                                             that.setStep(stepIteration + 1, true);
-                                            _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                            _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                         }
                                     }
     
                                     if(!stepNextBool && !stepPrevious) {
                                         that.nextStep();
-                                        _userException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
+                                        _throwUserException(`Шаг с элементом ${quickTipData[stepIteration - 1].object} не найден и будет пропущен.`, true);
                                     }
                                 }
                                 that.step();
@@ -471,7 +476,7 @@
                          * quickTipData.onClick()
                          */
                         if(quickTipData[stepIteration].onClick !== undefined && isEventActive) {
-                            _userException("Неверно объявлена функция onClick()", typeof quickTipData[stepIteration].onClick !== "function");
+                            _throwUserException("Неверно объявлена функция onClick()", typeof quickTipData[stepIteration].onClick !== "function");
                             objectClick = quickTipData[stepIteration].onClick;
                         }
 
@@ -479,7 +484,7 @@
                          * options.onClick()
                          */
                         else if(options != null && options.onClick !== undefined && isEventActive) {
-                            _userException("Неверно объявлена функция onClick()", typeof options.onClick !== "function");
+                            _throwUserException("Неверно объявлена функция onClick()", typeof options.onClick !== "function");
                             objectClick = options.onClick;
                         }
 
@@ -499,7 +504,7 @@
                              * quickTipData.triggerOnClick()
                              */
                             if(quickTipData[stepIteration].triggerOnClick !== undefined) {
-                                _userException("Неверно объявлена функция triggerOnClick()", typeof quickTipData[stepIteration].triggerOnClick !== "function");
+                                _throwUserException("Неверно объявлена функция triggerOnClick()", typeof quickTipData[stepIteration].triggerOnClick !== "function");
                                 triggerOnClick = quickTipData[stepIteration].triggerOnClick;
                             }
 
@@ -507,7 +512,7 @@
                              * options.triggerOnClick()
                              */
                             else if(options != null && options.triggerOnClick !== undefined) {
-                                _userException("Неверно объявлена функция triggerOnClick()", typeof options.triggerOnClick !== "function");
+                                _throwUserException("Неверно объявлена функция triggerOnClick()", typeof options.triggerOnClick !== "function");
                                 triggerOnClick = options.triggerOnClick;
                             }
 
@@ -566,7 +571,7 @@
              * onStart()
              */
             if(!preloaderRender && options != null && options.onStart !== undefined) {
-                _userException("Неверно объявлена функция onStart()", typeof options.onStart !== "function");
+                _throwUserException("Неверно объявлена функция onStart()", typeof options.onStart !== "function");
                 options.onStart();
             }
 
@@ -602,7 +607,7 @@
              * options.onEnd()
              */
             if(options != null && options.onEnd !== undefined) {
-                _userException("Неверно объявлена функция onEnd()", typeof options.onEnd !== "function");
+                _throwUserException("Неверно объявлена функция onEnd()", typeof options.onEnd !== "function");
                 options.onEnd();
             }
 
@@ -619,7 +624,7 @@
              * options.onSkip()
              */
             if(options != null && options.onSkip !== undefined) {
-                _userException("Неверно объявлена функция onSkip()", typeof options.onSkip !== "function");
+                _throwUserException("Неверно объявлена функция onSkip()", typeof options.onSkip !== "function");
                 options.onSkip();
             }
 
@@ -649,8 +654,8 @@
          * @private
          */
         function _isCanGoToPrevious(array, step = 0) {
-            // TODO: typedef описать
-            let result = {
+
+            let isCanGoToPrevious = {
                 id: 0,
                 isCanStep: false
             };
@@ -662,13 +667,13 @@
 
             for(let i = step; i >= 0; i--) {
                 if(_getObject(array[i].object) !== null) {
-                    result.id = i;
-                    result.isCanStep = true;
+                    isCanGoToPrevious.id = i;
+                    isCanGoToPrevious.isCanStep = true;
                     break; 
                 }
             }
 
-            return result;
+            return isCanGoToPrevious;
         }
        
         /**
@@ -1308,7 +1313,7 @@
          * @param condition Условие, при котором должно сработать исключение
          * @private
          */
-        function _userException(message, condition) {
+        function _throwUserException(message, condition) {
             if(condition) {
                 throw message;
             }
@@ -1334,7 +1339,7 @@
                 timerId = setTimeout(function() {
                     that.step(false);
                     onresizeBool = false;
-                }, DELAY_EVENT_RESIZE);
+                }, DELAY_RESIZE_EVENT);
             }
         }
 
