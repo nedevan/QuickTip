@@ -225,11 +225,7 @@
 
   let template = `
     <div class="quick-tip-block">
-
-      <!-- Хвостик -->
       <div id="quick-tip-tail" class="quick-tip-tail"></div>
-
-      <!-- Шапка -->
       <div class="quick-tip-head">
         <div id="quick-tip-title" class="quick-tip-title">Меню</div>
           <div class="quick-tip-indicator">
@@ -237,13 +233,9 @@
             <span id="quick-tip-indicator">1 из 3</span>
           </div>
         </div>
-
-        <!-- Текст -->
         <div id="quick-tip-text" class="quick-tip-text">
           Кнопка фхода, нужна для того чтобы войти
         </div>
-
-        <!-- Кнопки -->
         <div class="quick-tip-footer">
           <a href="#" id="quick-tip-stop">Пропустить</a>
           <button id="quick-tip-next">Далее</button>
@@ -252,7 +244,7 @@
     </div>
   `;
   
-  var quickTip = new QuickTip(template, {
+  let quickTip = new QuickTip(template, {
     onStart: function () { console.log("options.onStart() Обработка старта программы, шаг - " + quickTip.getStep()); },
     onStep: function () { console.log("options.onStep() Обработка шага, шаг - " + quickTip.getStep()); },
     onStepError: function() { console.log("options.onStepError() Обработка отсутствия шага, шаг - " + quickTip.getStep()); },
