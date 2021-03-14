@@ -8,7 +8,7 @@
      * QuickTip - плагин для быстрых подсказок
      * 
      * @param {String} html     template подсказки
-     * @param {Object} options  Предварительные настройки
+     * @param {QuickTipOptions|null} options  Предварительные настройки
      */
     const QuickTip = function(html, options = null) {
         /**
@@ -46,8 +46,19 @@
          */
         const that = this;
 
-        let quickTipData = [],
-            quickTipRun = false;
+        /**
+         * Данные QuickTip
+         *
+         * @type {QuickTipDataItem[]}
+         */
+        let quickTipData = [];
+
+        /**
+         * Запущен ли QuickTip
+         *
+         * @type {Boolean}
+         */
+        let quickTipRun = false;
      
         // Поля template
         let template = null,
@@ -301,27 +312,27 @@
         QuickTip.prototype.step = function(isEventActive = true) {
             if(quickTipRun && quickTipData.length > 0 && html != null) {
 
-                // this.blocksColor
+                // blocksColor
                 if(options != null && options.blocksColor !== undefined) this.blocksColor = options.blocksColor;
                 if(quickTipData[stepIteration].blocksColor !== undefined) this.blocksColor = quickTipData[stepIteration].blocksColor;
                 if((options === null || options.blocksColor === undefined) && quickTipData[stepIteration].blocksColor === undefined) this.blocksColor = "#0f0f0f";
 
-                // this.blocksOpacity
+                // blocksOpacity
                 if(options != null && options.blocksOpacity !== undefined) this.blocksOpacity = options.blocksOpacity;
                 if(quickTipData[stepIteration].blocksOpacity !== undefined) this.blocksOpacity = quickTipData[stepIteration].blocksOpacity;
-                if((options === null || options.blocksOpacity === undefined) && quickTipData[stepIteration].blocksOpacity === undefined) this.blocksOpacity = "0.5";
+                if((options === null || options.blocksOpacity === undefined) && quickTipData[stepIteration].blocksOpacity === undefined) this.blocksOpacity = 0.5;
 
-                // this.blocksZ
+                // blocksZ
                 if(options != null && options.blocksZ !== undefined) this.blocksZ = options.blocksZ;
                 if(quickTipData[stepIteration].blocksZ !== undefined) this.blocksZ = quickTipData[stepIteration].blocksZ;
-                if((options === null || options.blocksZ === undefined) && quickTipData[stepIteration].blocksZ === undefined) this.blocksZ = "9000";
+                if((options === null || options.blocksZ === undefined) && quickTipData[stepIteration].blocksZ === undefined) this.blocksZ = 9000;
 
-                // this.templateDefaultPosition
+                // templateDefaultPosition
                 if(options != null && options.templateDefaultPosition !== undefined) this.templateDefaultPosition = options.templateDefaultPosition;
                 if(quickTipData[stepIteration].templateDefaultPosition !== undefined) this.templateDefaultPosition = quickTipData[stepIteration].templateDefaultPosition;
                 if((options === null || options.templateDefaultPosition === undefined) && quickTipData[stepIteration].templateDefaultPosition === undefined) this.templateDefaultPosition = false;
 
-                // this.delay
+                // delay
                 if(options != null && options.delay !== undefined) this.delay = options.delay;
                 if(quickTipData[stepIteration].delay !== undefined) this.delay = quickTipData[stepIteration].delay;
                 if((options === null || options.delay === undefined) && quickTipData[stepIteration].delay === undefined) this.delay = 200;
@@ -388,7 +399,7 @@
                 }
                 
                 setTimeout(function() {
-                    object = _getObject(quickTipData[stepIteration].object);
+                    object = _getTarget(quickTipData[stepIteration].object);
                     objectCoordinate = _getObjectCoordinate(object);
             
                     if(objectCoordinate === null) {
@@ -408,7 +419,7 @@
                             } 
 
                             if(stepPrevious) {
-                                let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
+                                let check = _canGoToPrevious(quickTipData, stepIteration + 1);
                                 if(check.isCanStep) {
                                     this.setStep(check.id, true);
                                     _throwUserException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
@@ -450,7 +461,7 @@
                                     }
     
                                     if(stepPrevious) {
-                                        let check = _isCanGoToPrevious(quickTipData, stepIteration + 1);
+                                        let check = _canGoToPrevious(quickTipData, stepIteration + 1);
                                         if(check.isCanStep) {
                                             that.setStep(check.id, true);
                                             _throwUserException(`Шаг с элементом ${quickTipData[stepIteration + 1].object} не найден и будет пропущен.`, true);
@@ -646,14 +657,14 @@
         }
 
         /**
-         * Проверить что находится, если шагать назад
+         * Могу ли я шагнуть назад?
          *
          * @param {Object[]} array  Массив шагов
          * @param {Number}   step   Текущий шаг
          * @return {Object}
          * @private
          */
-        function _isCanGoToPrevious(array, step = 0) {
+        function _canGoToPrevious(array, step = 0) {
 
             let isCanGoToPrevious = {
                 id: 0,
@@ -666,7 +677,7 @@
             }
 
             for(let i = step; i >= 0; i--) {
-                if(_getObject(array[i].object) !== null) {
+                if(_getTarget(array[i].object) !== null) {
                     isCanGoToPrevious.id = i;
                     isCanGoToPrevious.isCanStep = true;
                     break; 
@@ -719,16 +730,16 @@
         /**
          * Получить цель (объект, который мы подсказываем)
          * 
-         * @param className Идентификатор объекта
+         * @param className Идентификатор цели
          * @return {Object}
          * @private
          */
-        function _getObject(className) {
+        function _getTarget(className) {
             if(className !== "" && className !== undefined && className !== null) {
                 let equivalent = className.split(':eq('),
                     id = null,
                     selector = null,
-                    object = null;
+                    target = null;
 
                 // Если :eq() - equivalent[1] будет заполнен
                 if(equivalent[1] !== undefined) {
@@ -741,16 +752,15 @@
                 if(typeof id === "number") {
                     
                     // querySelectorAll не возвращает null
-                    object = document.querySelectorAll(selector)[id];
-
-                    if(object === undefined) {
-                        object = null;
+                    target = document.querySelectorAll(selector)[id];
+                    if(target === undefined) {
+                        target = null;
                     }
                 } else {
-                    object = document.querySelector(className); 
+                    target = document.querySelector(className);
                 }
 
-                return object;
+                return target;
             }
         }
 
@@ -810,7 +820,7 @@
         /**
          * Записать информацию в template
          * 
-         * @param {String} data template
+         * @param {QuickTipDataItem} data template
          * @private
          */
         function _setTemplateData(data) {
@@ -1013,7 +1023,6 @@
                 blockBottom.style.right = "0px";
                 blockBottom.style.bottom = "0px";
             } else {
-
                 blockLeft.style.backgroundColor = that.blocksColor;
                 blockLeft.style.opacity = that.blocksOpacity;
                 blockLeft.style.zIndex = that.blocksZ;
@@ -1436,3 +1445,61 @@
 
     window.QuickTip = QuickTip;
 })(window);
+
+/**
+ * Параметры настроек QuickTip
+ *
+ * @typedef {Object} QuickTipOptions
+ * @property {String} blocksColor - Цвет блоков
+ * @property {Number} blocksOpacity - Прозрачность блоков
+ * @property {Number} blocksZ - Z index блоков
+ * @property {Boolean} templateDefaultPosition - дефолтная позиция подсказки (центр)
+ * @property {Number} delay - задержка шага
+ * @property {Number} objectMargin - отступ от цели
+ * @property {Boolean} blocksActive - активировать блоки?
+ * @property {Boolean} tailActive - активировать хвост?
+ * @property {Boolean} buttonStopActive - Кнопка стоп
+ * @property {Boolean} buttonNextActive - Кнопка вперед
+ * @property {Boolean} buttonPreviousActive - Кнопка назад
+ * @property {Boolean} triggerActive - Сделать ли триггер над целью
+ * @property {Offset} offset - Смещение относительно цели
+ * @property {Number} errorTimeout - Сколько ждать ошибке
+ *
+ * @property {Function} onStart - Событие выполняется при инициализации программы
+ * @property {Function} onStep - Событие выполняется во время шага вперед
+ * @property {Function} onStepError - Событие выполняется если элемент не найден
+ * @property {Function} onNext - Событие выполняется перед шагом вперед
+ * @property {Function} onPrevious - Событие выполняется перед шагом назад
+ * @property {Function} onEnd - Событие выполняется в конце программы
+ * @property {Function} onSkip - Событие выполняется при скипе программы
+ * @property {Function} onTriggerClick - Событие выполняется при клике на объект
+ */
+
+/**
+ * Параметры шага QuickTip
+ *
+ * @typedef {Object} QuickTipDataItem
+ * @property {String} blocksColor - Цвет блоков
+ * @property {Number} blocksOpacity - Прозрачность блоков
+ * @property {Number} blocksZ - Z index блоков
+ * @property {Boolean} templateDefaultPosition - дефолтная позиция подсказки (центр)
+ * @property {Number} delay - задержка шага
+ * @property {Number} objectMargin - отступ от цели
+ * @property {Boolean} blocksActive - активировать блоки?
+ * @property {Boolean} tailActive - активировать хвост?
+ * @property {Boolean} buttonStopActive - Кнопка стоп
+ * @property {Boolean} buttonNextActive - Кнопка вперед
+ * @property {Boolean} buttonPreviousActive - Кнопка назад
+ * @property {Boolean} triggerActive - Сделать ли триггер над целью
+ * @property {Offset} offset - Смещение относительно цели
+ * @property {Number} errorTimeout - Сколько ждать ошибке
+ *
+ * @property {Function} onStep - Событие выполняется во время шага вперед
+ * @property {Function} onTriggerClick - Событие выполняется при клике на объект
+ */
+
+/**
+ * @typedef {Object} Offset
+ * @property {Number} top - Смещение по оси Y
+ * @property {Number} left - Смещение по оси X
+ */
