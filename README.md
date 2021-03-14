@@ -6,8 +6,6 @@
 Установите id идентификаторы на важные поля, чтобы QuickTip мог работать с вашим темплейтом:
 
 ```javascript
-
-    // Наш тестовый темплейт, читайте id идентификаторы (Ниже)
     let template = `
         <div class="quick-tip-block">
             <div id="quick-tip-tail" class="quick-tip-tail"></div>
@@ -25,23 +23,13 @@
             </div>
         </div>`;
 
-    // С одним параметром
-    var quickTip = new QuickTip(template);
+    // С одним параметром второй параметр не обязателен
+    // var quickTip = new QuickTip(template);
 
     // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
     var quickTip = new QuickTip(template, {
-
         onStart: function () { /* code ... */ },
-
-        onStep: function() { /* code ... */ },
-
-        onEnd: function () { /* code ... */ },
-
-        /* code ... */
-
-        /* code ... */
-
-        /* code ... */
+         /* code ... */
     });
 
     // Запускаем (#### Функции объекта QuickTip)
