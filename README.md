@@ -1,6 +1,70 @@
 # QuickTip
 Библиотека QuickTip “быстрые подсказки” создавалась независимой и поэтому не помешает не одной технологии, используемой в проекте такие как (Vue.js, React.js, Angular.js, jQuery), так как была написана на чистом JavaScript. 
 
+## Быстрый старт QuickTip
+Перед началом работы создайте свой темплейт и добавьте его в конструктор.
+Установите id идентификаторы на важные поля, чтобы QuickTip мог работать с вашим темплейтом:
+
+```javascript
+
+    // Наш тестовый темплейт, читайте id идентификаторы (Ниже)
+    let template = `
+        <div class="quick-tip-block">
+            <div id="quick-tip-tail" class="quick-tip-tail"></div>
+            <div class="quick-tip-head">
+                <div id="quick-tip-title" class="quick-tip-title">Меню</div>
+                <div class="quick-tip-indicator">
+                    <i id="quick-tip-previous" class="fa fa-chevron-left" aria-hidden="true"></i>
+                    <span id="quick-tip-indicator">1 из 3</span>
+                </div>
+            </div>
+            <div id="quick-tip-text" class="quick-tip-text">Кнопка фхода, нужна для того чтобы войти</div>
+            <div class="quick-tip-footer">
+                <a href="#" id="quick-tip-stop">Пропустить</a>
+                <button id="quick-tip-next">Далее</button>
+            </div>
+        </div>`;
+
+    // С одним параметром
+    var quickTip = new QuickTip(template);
+
+    // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
+    var quickTip = new QuickTip(template, {
+
+        onStart: function () { /* code ... */ },
+
+        onStep: function() { /* code ... */ },
+
+        onEnd: function () { /* code ... */ },
+
+        /* code ... */
+
+        /* code ... */
+
+        /* code ... */
+    });
+
+    // Запускаем (#### Функции объекта QuickTip)
+    quickTip.run();
+
+    // Инициализируем сценарий, читайте (#### JSON Объект)
+    quickTip.set([
+        {   
+            object: '.a-bla',
+            title: 'Это title шага',
+            text: 'Это text шага',
+            button_next: 'Продолжить',
+            onStep: function() { /* code ... */ }
+        },{   
+            object: '.f-bla',
+            title: 'Это title шага',
+            text: 'Это text шага',
+            button_next: 'Завершить',
+            button_stop: '',
+        }
+    ]);
+```
+
 ## Пример Создания Темплейта
 Сейчас мы создадим темплейт, который будет служить нашей подсказкой.
 В данном примере указаны id идентификаторы, которые работают с библиотекой напрямую.
@@ -140,68 +204,4 @@
         /* z-index перекрывающих блоков темплейта (не обязательно) по умолчанию "9000" */
         blocksZ: "9000",
     }
-```
-
-#### Старт QuickTip
-Перед началом работы создайте свой темплейт и добавьте его в конструктор.
-Установите id идентификаторы на важные поля, чтобы QuickTip мог работать с вашим темплейтом:
-
-```javascript
-
-    // Наш тестовый темплейт, читайте id идентификаторы (Ниже)
-    let template = `
-        <div class="quick-tip-block">
-            <div id="quick-tip-tail" class="quick-tip-tail"></div>
-            <div class="quick-tip-head">
-                <div id="quick-tip-title" class="quick-tip-title">Меню</div>
-                <div class="quick-tip-indicator">
-                    <i id="quick-tip-previous" class="fa fa-chevron-left" aria-hidden="true"></i>
-                    <span id="quick-tip-indicator">1 из 3</span>
-                </div>
-            </div>
-            <div id="quick-tip-text" class="quick-tip-text">Кнопка фхода, нужна для того чтобы войти</div>
-            <div class="quick-tip-footer">
-                <a href="#" id="quick-tip-stop">Пропустить</a>
-                <button id="quick-tip-next">Далее</button>
-            </div>
-        </div>`;
-
-    // С одним параметром
-    var quickTip = new QuickTip(template);
-
-    // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
-    var quickTip = new QuickTip(template, {
-
-        onStart: function () { /* code ... */ },
-
-        onStep: function() { /* code ... */ },
-
-        onEnd: function () { /* code ... */ },
-
-        /* code ... */
-
-        /* code ... */
-
-        /* code ... */
-    });
-
-    // Запускаем (#### Функции объекта QuickTip)
-    quickTip.run();
-
-    // Инициализируем сценарий, читайте (#### JSON Объект)
-    quickTip.set([
-        {   
-            object: '.a-bla',
-            title: 'Это title шага',
-            text: 'Это text шага',
-            button_next: 'Продолжить',
-            onStep: function() { /* code ... */ }
-        },{   
-            object: '.f-bla',
-            title: 'Это title шага',
-            text: 'Это text шага',
-            button_next: 'Завершить',
-            button_stop: '',
-        }
-    ]);
 ```
