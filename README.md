@@ -27,26 +27,23 @@
     // var quickTip = new QuickTip(template);
 
     // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
-    var quickTip = new QuickTip(template, {
+    const quickTip = new QuickTip(template, {
         onStart: function () { /* code ... */ },
          /* code ... */
     });
-
-    // Запускаем (#### Функции объекта QuickTip)
     quickTip.run();
-
-    // Инициализируем сценарий, читайте (#### JSON Объект)
     quickTip.set([
         {   
-            object: '.a-bla',
-            title: 'Это title шага',
-            text: 'Это text шага',
+            object: '.first',
+            title: 'Первый шаг',
+            text: 'Это первый шаг, он что-то показывает. Текст может быть любым',
             button_next: 'Продолжить',
             onStep: function() { /* code ... */ }
-        },{   
-            object: '.f-bla',
-            title: 'Это title шага',
-            text: 'Это text шага',
+        },
+        {   
+            object: '#second',
+            title: 'Второй шаг',
+            text: 'Это второй шаг, он что-то показывает. Текст может быть любым',
             button_next: 'Завершить',
             button_stop: '',
         }
