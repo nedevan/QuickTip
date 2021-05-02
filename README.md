@@ -6,7 +6,7 @@
 Установите id идентификаторы на важные поля, чтобы QuickTip мог работать с вашим template:
 
 ```javascript
-    let template = `
+    const template = `
         <div class="quick-tip-block">
             <div id="quick-tip-tail" class="quick-tip-tail"></div>
             <div class="quick-tip-head">
@@ -16,7 +16,7 @@
                     <span id="quick-tip-indicator">1 из 3</span>
                 </div>
             </div>
-            <div id="quick-tip-text" class="quick-tip-text">Кнопка фхода, нужна для того чтобы войти</div>
+            <div id="quick-tip-text" class="quick-tip-text">Кнопка входа</div>
             <div class="quick-tip-footer">
                 <a href="#" id="quick-tip-stop">Пропустить</a>
                 <button id="quick-tip-next">Далее</button>
@@ -26,7 +26,7 @@
     // С одним параметром второй параметр не обязателен
     // const quickTip = new QuickTip(template);
 
-    // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
+    /* С двумя параметрами. */
     const quickTip = new QuickTip(template, {
         onStart: function () {
             // code ...
@@ -35,25 +35,25 @@
     quickTip.run();
     quickTip.set([
         {   
-            object: '.first',
-            title: 'Первый шаг',
-            text: 'Это первый шаг, он что-то показывает. Текст может быть любым',
-            button_next: 'Продолжить',
+            object: ".first",
+            title: "Первый шаг",
+            text: "Это первый шаг, он что-то показывает. Текст может быть любым",
+            button_next: "Продолжить",
             onStep: function() {
                 // code ...
             }
         },
         {   
-            object: '#second',
-            title: 'Второй шаг',
-            text: 'Это второй шаг, он что-то показывает. Текст может быть любым',
-            button_next: 'Завершить',
-            button_stop: '',
+            object: "#second",
+            title: "Второй шаг",
+            text: "Это второй шаг, он что-то показывает. Текст может быть любым",
+            button_next: "Завершить",
+            button_stop: "",
         }
     ]);
 ```
 
-## Пример Создания Template
+## Пример Создания template
 Сейчас мы создадим template, который будет служить нашей подсказкой.
 В данном примере указаны id идентификаторы, которые работают с библиотекой напрямую.
 Они помогут вам работать с текстом подсказки, работа с кнопками и тд.
@@ -69,7 +69,7 @@
 * `quick-tip-tail`               - хвостик
 
 ### Пример, создаем template в HTML:
-Вы может создать свой template.
+Вы можете создать свой template.
 ```html
     <div class="quick-tip-block">
 
@@ -108,7 +108,7 @@
 * `onSkip`                      - Выполняется при скипе программы
 * `onTriggerClick`              - Выполняется при клике на объект
 
-# Функции которые на конкретном шаге
+# События, которые можно вызвать на конкретном шаге
 * `onStep`                      - Выполняется во время шага вперед
 * `onTriggerClick`              - Выполняется при клике на объект
 
@@ -116,7 +116,7 @@
 * `new QuickTip(html)`          - С одним параметром, передается template
 * `new QuickTip(html, options)` - С двумя параметрами, передается template и глобальные настройки
 
-#### Функции объекта QuickTip
+#### Методы объекта QuickTip
 * `run()`                       - Запускает сценарии с первого шага, если сценарий не задан, ждет сценарий
 * `run(int)`                    - Запускает сценарии с шага, если сценарий не задан, ждет сценарий
 * `set([{}, {}])`               - Инициализирует сценарий, может быть вызван как до, так и после функции run(), но не после stop()
@@ -133,8 +133,8 @@
 Для создания сценария, нужно указать правильные поля JSON объекта. 
 Снизу представлен JSON объект
 
-```JavaScript
-    let stepItem = {
+```javascript
+    const stepItem = {
         /* класс объекта, который показываем */
         object: ".class|#id",
 
