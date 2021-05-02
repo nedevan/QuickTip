@@ -24,7 +24,7 @@
         </div>`;
 
     // С одним параметром второй параметр не обязателен
-    // var quickTip = new QuickTip(template);
+    // const quickTip = new QuickTip(template);
 
     // С двумя параметрами. Все парметры указанные в этом блоке, вызываются на каждом шаге
     const quickTip = new QuickTip(template, {
